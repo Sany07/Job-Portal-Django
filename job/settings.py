@@ -84,11 +84,6 @@ WSGI_APPLICATION = 'job.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< HEAD
-        'NAME': 'jobportal_db',                      
-=======
-        'NAME': 'jobportal',                      
->>>>>>> account
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -139,10 +134,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = "/media/"
-<<<<<<< HEAD
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-=======
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = 'account.User'
->>>>>>> account
