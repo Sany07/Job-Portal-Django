@@ -37,13 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-<<<<<<< HEAD
-    'jobapp.apps.JobappConfig'
-=======
     'jobapp.apps.JobappConfig',
     'account.apps.AccountConfig',
->>>>>>> account
 ]
 
 MIDDLEWARE = [
