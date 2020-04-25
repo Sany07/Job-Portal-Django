@@ -1,8 +1,11 @@
 from django.urls import path
-from jobapp import views
+from account import views
+
 
 urlpatterns = [
 
-    path('', views.home, name='home')
-
+    path('employee/register/', views.EmployeeRegistration, name='employee-registration'),
+    path('employer/register/', views.EmployeeRegistration, name='employee-registration'),
+    path('login/', views.UserLogIn, name='login'),
+    path('logout/', views.UserLogOut, name='login'),
 ]
