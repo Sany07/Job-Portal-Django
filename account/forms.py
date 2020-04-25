@@ -55,3 +55,52 @@ class EmployerRegistrationForm(UserCreationForm):
             user.save()
         return user
 
+
+class UserLoginForm(forms.Form):
+    email =  forms.EmailField(
+    widget=forms.EmailInput(attrs={ 'placeholder':'Email',})
+) 
+    password = forms.CharField(strip=False,widget=forms.PasswordInput(attrs={
+        
+        'placeholder':'Password',
+    }))
+
+    def clean(self, *args, **kwargs):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+
+        if email and password:
+            self.user = authenticate(email=email, password=password)
+
+            if self.user is None:
+                raise forms.ValidationError("User Does Not Exist.")
+            if not self.user.check_password(password):
+                raise forms.ValidationError("Password Does not Match.")
+            if not self.user.is_active:
+                raise forms.ValidationError("User is not Active.")
+
+        return super(UserLoginForm, self).clean(*args, **kwargs)
+
+    def get_user(self):
+        return self.user
+
+
+
+class EmployeeProfileUpdateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EmployeeProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update(
+            {
+                'placeholder': 'Enter First Name',
+            }
+        )
+        self.fields['last_name'].widget.attrs.update(
+            {
+                'placeholder': 'Enter Last Name',
+            }
+        )
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "gender"]
