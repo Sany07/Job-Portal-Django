@@ -4,23 +4,47 @@ from account.forms import *
 
 
 def EmployeeRegistration(request):
+    """
+    Handle Employee Registration
 
+    """
     form = EmployeeRegistrationForm(request.POST or None)
     if form.is_valid():
         form = form.save()
-        return redirect('/')
+        return redirect('login')
     context={
         
             'form':form
         }
 
-    return render(request,'account.html',context)
+    return render(request,'account/employee-registration.html',context)
+
+
+def EmployeeRegistration(request):
+    """
+    Handle Employee Registration 
+
+    """
+
+    form = EmployerRegistrationForm(request.POST or None)
+    if form.is_valid():
+        form = form.save()
+        return redirect('login')
+    context={
+        
+            'form':form
+        }
+
+    return render(request,'account/employer-registration.html',context)
 
 
 
 def UserLogIn(request):
 
+    """
+    Provides users to logIn
 
+    """
     form = UserLoginForm(request.POST or None)
 
     if request.user.is_authenticated:
@@ -32,8 +56,16 @@ def UserLogIn(request):
                 auth.login(request, form.get_user())
                 return redirect('home')
     context = {
-        'lform': form,
+        'form': form,
     }
 
-    return render(request,'account.html',context)
+    return render(request,'account/login.html',context)
 
+
+def UserLogOut(request):
+    """
+    Provide the ability to logout
+    """
+    auth.logout(request)
+    messages.success(request, 'You are Successfully logged out')
+    return redirect('/')
