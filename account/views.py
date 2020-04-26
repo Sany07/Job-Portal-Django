@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.shortcuts import render, redirect
 from account.forms import *
 # Create your views here.
@@ -54,7 +55,7 @@ def UserLogIn(request):
         if request.method == 'POST':
             if form.is_valid():
                 auth.login(request, form.get_user())
-                return redirect('home')
+                return redirect('/')
     context = {
         'form': form,
     }
