@@ -1,7 +1,7 @@
 from django.db import models
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
-from account.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 # Create your models here.
 
 JOB_TYPE = (
@@ -19,15 +19,15 @@ class Category(models.Model):
 
 class Job(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, related_name='Use', on_delete=models.CASCADE) 
     title = models.CharField(max_length=300)
     description = models.TextField()
     location = models.CharField(max_length=300)
     job_type = models.CharField(choices=JOB_TYPE, max_length=1)
-    category = models.ForeignKey(Category,related_name='Category', on_delete=models.CASCADE)
-    salary = models.CharField(max_length=300, blank=True)
+    catagory = models.ForeignKey(Category,related_name='Category', on_delete=models.CASCADE)
+    salary = models.IntegerField(blank=True)
     company_name = models.CharField(max_length=300)
-    company_description = models.CharField(max_length=300)
+    company_description = models.CharField(max_length=50)
     url = models.URLField(max_length=200)
     last_date = models.DateField()
     timestamp = models.DateTimeField(auto_now=True)

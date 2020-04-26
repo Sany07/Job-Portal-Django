@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'jobapp.apps.JobappConfig',
-    'account.apps.AccountConfig',
+    'jobapp.apps.JobappConfig'
 ]
 
 MIDDLEWARE = [
@@ -80,7 +79,7 @@ WSGI_APPLICATION = 'job.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jobportal',                      
+        'NAME': 'jobportal_db',                      
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -132,5 +131,3 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-AUTH_USER_MODEL = 'account.User'
