@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'ckeditor',
+    'taggit',
+
     'jobapp.apps.JobappConfig',
     'account.apps.AccountConfig',
 ]
@@ -79,6 +83,7 @@ WSGI_APPLICATION = 'job.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'jobportal',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -128,7 +133,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR,'assets')
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = 'account.User'
+
+# CKeditor Config
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'tabSpaces': 4,
+
+    }
+}

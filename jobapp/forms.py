@@ -4,29 +4,64 @@ from django.contrib.auth import get_user_model
 from django.contrib import auth
 
 from jobapp.models import Job
+from ckeditor.widgets import CKEditorWidget
 
+
+    
 
 class JobForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         forms.ModelForm.__init__(self, *args, **kwargs)
         self.fields['title'].label = "Job Title :"
+        self.fields['location'].label = "Job Location :"
+        self.fields['salary'].label = "Salary :"
+        self.fields['description'].label = "Job Description :"
+        self.fields['last_date'].label = "Dead Line :"
+        self.fields['company_name'].label = "Company Name :"
+        self.fields['url'].label = "Website :"
 
 
         self.fields['title'].widget.attrs.update(
             {
                 'placeholder': 'eg : Software Developer',
             }
-        )
+        )        
+        self.fields['location'].widget.attrs.update(
+            {
+                'placeholder': 'eg : Bangladesh',
+            }
+        )        
+        self.fields['salary'].widget.attrs.update(
+            {
+                'placeholder': 'Salary ',
+            }
+        )        
+        self.fields['company_name'].widget.attrs.update(
+            {
+                'placeholder': 'Company Name',
+            }
+        )           
+        self.fields['url'].widget.attrs.update(
+            {
+                'placeholder': 'https://example.com',
+            }
+        )    
 
-        # widget=forms.TextInput(attrs={'placeholder': 'Phone Number'}))
+    
+        last_date = forms.CharField(widget=forms.TextInput(attrs={
+                    'placeholder': 'Service Name',
+                    'class' : 'datetimepicker1'
+                }))
 
     class Meta:
         model = Job
+
         fields = [
             "title",
             "location",
             "job_type",
+            "tags",
             "category",
             "salary",
             "description",

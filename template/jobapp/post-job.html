@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
   {% block content %}
 
     <!-- HOME -->
@@ -40,9 +41,9 @@
             </div>
           </div>
         </div>
-        <div class="row mb-5">
+        <form  method="POST" enctype="multipart/form-data">
+        <div class="row mb-5 p-4 p-md-5 border rounded">
           <div class="col-lg-12">
-            <form class="p-4 p-md-5 border rounded" method="POST">
               <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
                   {% if form.errors %}
                         {% for field in form %}
@@ -78,9 +79,28 @@
                               {% endfor %}
                         </select>
                         </div>
-
+                                           
+                        {% elif field.name == 'description' %}
+                              <div class="form-group">
+                                <label for="job-type">Description</label>
+                                 <div class="">
+                                  {{ form.media }}
+                                  {{ form.description }}
+                              </div>
+                              </div>
+                        {% elif field.name == 'company_description' %}
+                              <div class="form-group">
+                                <label for="job-type">Company Description</label>
+                              <div class="">
+                                
+                                  {{ form.media }}
+                                  {{ form.company_description }}
+                              </div>
+                              </div>
                         {% else %}
-
+                          {% if field.name == 'company_name'%}
+                              <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Company Details</h3>
+                          {% endif%}
                         <div class="form-group">
                             <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
                             <input type="{{ field.field.widget.input_type }}"
@@ -89,30 +109,27 @@
                                    id="id_{{ field.name }}"
                                    placeholder="{{ field.field.widget.attrs.placeholder }}">
                         </div>
-
                     {% endif %}
                 {% endfor %}
-                <button type="submit" class="btn btn-block btn-primary btn-md"> Save Job </button>
-
-            </form>
-          </div>
-
-         
+          </div>    
         </div>
+
+        
         <div class="row align-items-center mb-5">
-          
           <div class="col-lg-4 ml-auto">
             <div class="row">
               <div class="col-6">
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
+
+                <input class="btn btn-block btn-primary btn-md" type="submit" value="Submit" >
               </div>
             </div>
           </div>
+            </form>
+
         </div>
       </div>
     </section>
-
 {% endblock %}
