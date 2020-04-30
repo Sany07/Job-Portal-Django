@@ -261,4 +261,5 @@ jQuery(function($) {
 	}
 	quillInit();
   
+
 });

@@ -5,8 +5,8 @@ app_name = "account"
 
 urlpatterns = [
 
-    path('employee/register/', views.EmployeeRegistration, name='employee-registration'),
-    path('employer/register/', views.EmployeeRegistration, name='employee-registration'),
-    path('login/', views.UserLogIn, name='login'),
-    path('logout/', views.UserLogOut, name='login-out'),
+    path('employee/register/', views.employee_registration, name='employee-registration'),
+    path('employer/register/', views.employee_registration, name='employer-registration'),
+    path('login/', views.user_logIn, name='login'),
+    path('logout/', views.user_logOut, name='logout'),
 ]
