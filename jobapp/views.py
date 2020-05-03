@@ -179,7 +179,6 @@ def dashboard_view(request):
     }
     return render(request, 'jobapp/dashboard.html', context)
 
-
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def delete_job_view(request, id):
@@ -192,8 +191,7 @@ def delete_job_view(request, id):
         messages.success(request, 'Your Job Post was successfully deleted!')
 
     return redirect('jobapp:dashboard')
-
-
+ 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def all_applicants_view(request, id):
