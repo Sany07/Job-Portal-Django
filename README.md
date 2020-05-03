@@ -36,11 +36,6 @@ python manage.py collectstatic
 python manage.py runserver
 ```
 
-## Run the server
-
-```
-python manage.py runserver
-```
 
 <div align="center">
     <h3>========Thank You=========</h3>
