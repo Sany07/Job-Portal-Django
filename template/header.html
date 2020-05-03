@@ -22,63 +22,66 @@
   <header class="site-navbar mt-3">
     <div class="container-fluid">
       <div class="row align-items-center">
-        <div class="site-logo col-6"><a href="{% url 'jobapp:home' %}">JobBoard</a></div>
+        <div class="site-logo col-6"><a href="{% url 'jobapp:home' %}">DJobPortal</a></div>
 
         <nav class="mx-auto site-navigation">
           <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
             <li><a href="{% url 'jobapp:home' %}" class="nav-link">Home</a></li>
-            <li><a href="{% url 'jobapp:about' %}">About</a></li>
-            <li class="has-children">
-              <a href="job-listings.html">Job Listings</a>
-              <ul class="dropdown">
-                <li><a href="job-single.html">Job Single</a></li>
-                <li><a href="{% url 'jobapp:create-job' %}">Post a Job</a></li>
-              </ul>
-            </li>
-            <li><a href="{% url 'jobapp:contact' %}">Contact</a></li>
-            <li class="d-lg-none"><a href="{% url 'jobapp:create-job' %}"><span class="mr-2">+</span> Post a Job</a>
-            </li>
-            {% if user.is_authenticated %}
-
-            <li class="d-lg-none"><a href="{% url 'account:logout' %}">Log Out</a></li>
-
-            {% else %}
-
-            <li class="d-lg-none"><a href="{% url 'account:login' %}">Log In</a></li>
-            {% endif %}
+            <li><a href="#">About</a></li>
+            <li><a href="{% url 'jobapp:job-list' %}">Job Listings</a></li>
+            <li><a href="#">Contact</a></li>
           </ul>
         </nav>
-
         <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
           <div class="ml-auto">
+            <div class="site-navigation fix">
+              <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
 
-            {% if user.is_authenticated %}
-
+                {% if user.is_authenticated and user.role == 'employer'  %}
                 <a href="{% url 'jobapp:create-job' %}"
-                class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                  class="mr-2 icon-add"></span>Post a Job</a>
-            {% else %}
-            <a href="{% url 'account:login' %}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-              class="mr-2 icon-lock_outline"></span>Register</a>
+                  class="js-clone-nav pr-3 btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
+                    class="mr-2 icon-add"></span>Post a Job</a>
 
-            {% endif %}
+                  
+                    <li class="pr-3 has-children">
+                      <a>Dashboard</a> 
+                      <ul class="dropdown">
+                        <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                      </ul>
+                    </li>
 
-            {% if user.is_authenticated %}
+                {% elif user.is_authenticated and user.role == 'employee'  %}
 
-            <a href="{% url 'account:logout' %}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-                class="mr-2 icon-lock_outline"></span>Log Out</a>
-            {% else %}
+                <li class="pr-3 has-children">
+                  <a>Profile</a>
+                  <ul class="dropdown">
+                    <li><a href="{% url 'account:edit-profile' request.user.id %}">Edit Settings</a></li>
+                  </ul>
+                </li>
 
-            <a href="{% url 'account:login' %}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-                class="mr-2 icon-lock_outline"></span>Log In</a>
-            {% endif %}
+                <a href="{% url 'account:logout' %}"
+                class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
+                  class="mr-2 icon-lock_outline"></span>Log Out</a>
+                {% else %}
 
+                <li class="pr-3 has-children">
+                  <a>Register</a>
+                  <ul class="dropdown">
+                    <li><a href="{% url 'account:employer-registration' %}">Employer</a></li>
+                    <li><a href="{% url 'account:employee-registration' %}">Employee</a></li>
+                  </ul>
+                </li>
 
-          </div>
-          <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
-              class="icon-menu h3 m-0 p-0 mt-2"></span></a>
-        </div>
+                <a href="{% url 'account:login' %}"
+                  class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
+                    class="mr-2 icon-lock_outline"></span>Log In</a>
+                {% endif %}
+              </ul>
+            </div>
 
+        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
+            class="icon-menu h3 m-0 p-0 mt-2"></span></a>
       </div>
     </div>
   </header>

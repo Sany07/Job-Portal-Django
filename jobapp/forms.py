@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 
-from jobapp.models import Job
+from jobapp.models import *
 from ckeditor.widgets import CKEditorWidget
 
 
@@ -17,6 +17,7 @@ class JobForm(forms.ModelForm):
         self.fields['location'].label = "Job Location :"
         self.fields['salary'].label = "Salary :"
         self.fields['description'].label = "Job Description :"
+        self.fields['tags'].label = "Tags :"
         self.fields['last_date'].label = "Dead Line :"
         self.fields['company_name'].label = "Company Name :"
         self.fields['url'].label = "Website :"
@@ -31,10 +32,20 @@ class JobForm(forms.ModelForm):
             {
                 'placeholder': 'eg : Bangladesh',
             }
-        )        
+        )
         self.fields['salary'].widget.attrs.update(
             {
-                'placeholder': 'Salary ',
+                'placeholder': '$800 - $1200',
+            }
+        )
+        self.fields['tags'].widget.attrs.update(
+            {
+                'placeholder': 'Use comma separated. eg: Python, JavaScript ',
+            }
+        )                        
+        self.fields['last_date'].widget.attrs.update(
+            {
+                'placeholder': 'YYYY-MM-DD ',
             }
         )        
         self.fields['company_name'].widget.attrs.update(
@@ -61,10 +72,10 @@ class JobForm(forms.ModelForm):
             "title",
             "location",
             "job_type",
-            "tags",
             "category",
             "salary",
             "description",
+            "tags",
             "last_date",
             "company_name",
             "company_description",
@@ -95,3 +106,12 @@ class JobForm(forms.ModelForm):
 
 
 
+class JobApplyForm(forms.ModelForm):
+    class Meta:
+        model = Applicant
+        fields = ['job']
+
+class JobBookmarkForm(forms.ModelForm):
+    class Meta:
+        model = BookmarkJob
+        fields = ['job']

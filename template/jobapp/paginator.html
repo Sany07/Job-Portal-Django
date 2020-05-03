@@ -1,0 +1,27 @@
+{% if page_obj.has_other_pages %}
+<div class="row pagination-wrap">
+  <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+    <span>Showing {{ page_obj.number }} of {{ page_obj.paginator.count }} Pages</span>
+  </div>
+  <div class="col-md-6 text-center text-md-right">
+    <div class="custom-pagination ml-auto">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="prev">Prev</a>
+      {% endif %}
+
+      <div class="d-inline-block">
+        {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+        <a class="active">{{ i }}</a>
+        {% else %}
+        <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% if page_obj.has_next %}
+      <a class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}

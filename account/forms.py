@@ -10,7 +10,7 @@ class EmployeeRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         UserCreationForm.__init__(self, *args, **kwargs)
-        self.fields['gender'].required = True
+        # self.fields['gender'].required = True
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
         self.fields['password1'].label = "Password :"
@@ -141,10 +141,10 @@ class UserLoginForm(forms.Form):
 
 
 
-class EmployeeProfileUpdateForm(forms.ModelForm):
+class EmployeeProfileEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(EmployeeProfileUpdateForm, self).__init__(*args, **kwargs)
+        super(EmployeeProfileEditForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs.update(
             {
                 'placeholder': 'Enter First Name',

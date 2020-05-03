@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
+    id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">Dashboard</h1>
+                <div class="custom-breadcrumbs">
+                    <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+                    <a href="{% url 'jobapp:job-list' %}">Job</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>{{ job.title }}</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-5">
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ message }}</strong>
+                </div>
+    
+              {% endfor %}
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Posted Date</th>
+                                <th>Date expiring</th>
+                                <th>Applicants</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                            <tr>
+                                <th scope="row"><a href="{% url 'jobapp:single-job' job.id %}">{{ job.title }}</a></th>
+                                <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                <td>{{ job.last_date | date:'M d, Y' }}</td>
+                                <td>
+                                    <a href="{% url 'jobapp:applicants' job.id %}"><i class="fa fa-users"></i>{{ job.applicants.count }}
+                                        <span class="hidden-xs hidden-sm">Applicants</span> </a>
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled">
+                                        <!-- <li><a href="">Edit</a></li> -->
+                                        <li><a href="{% url 'jobapp:delete' job.id %}"> Delete </a></li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -9,15 +9,18 @@ JOB_TYPE = (
 
 )
 
+ROLE = (
+    ('employer', "Employer"),
+    ('employee', "Employee"),
+)
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, blank=False,
                               error_messages={
                                   'unique': "A user with that email already exists.",
                               })
-    role = models.CharField(max_length=12, error_messages={
-        'required': "Role must be provided"
-    })
+    role = models.CharField(choices=ROLE,  max_length=10)
     gender = models.CharField(choices=JOB_TYPE, max_length=1)
 
 
@@ -27,4 +30,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    def get_full_name(self):
+        return self.first_name+ ' ' + self.last_name
     objects = CustomUserManager()
