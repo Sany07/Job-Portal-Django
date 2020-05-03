@@ -3,7 +3,7 @@
   {% block content %}
 
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url({% static 'images/hero_1.jpg' %});" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
@@ -32,9 +32,7 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
-              </div>
+       
               <div class="col-6">
                 <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
               </div>
@@ -118,9 +116,6 @@
         <div class="row align-items-center mb-5">
           <div class="col-lg-4 ml-auto">
             <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
-              </div>
               <div class="col-6">
 
                 <input class="btn btn-block btn-primary btn-md" type="submit" value="Submit" >

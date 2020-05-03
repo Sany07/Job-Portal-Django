@@ -1668,7 +1668,32 @@ h1, h2, h3, h4 {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
 
+.site-navigation.fix {
+    position: relative;
+}
 
+.min-h{
+  min-height: 100%;
+}
+.menu-fix{
+  display: inline-block
+}
+
+.badge-primary {
+  color: #fff;
+}
+.badge-secondary {
+  color: #fff;
+  background-color: #498ecc;
+
+}
+
+
+.table td, .table th {
+
+  vertical-align: middle !important;
+  
+}
 
 /* CKEditor */
 .django-ckeditor-widget {

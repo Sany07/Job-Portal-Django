@@ -49,5 +49,15 @@ class Applicant(models.Model):
 
 
     def __str__(self):
-        return self.name.id
-    
+        return self.job.title
+
+
+class BookmarkJob(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+
+    def __str__(self):
+        return self.job.title

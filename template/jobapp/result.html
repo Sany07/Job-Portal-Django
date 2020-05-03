@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
+  id="home-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1 class="text-white font-weight-bold">Search Result</h1>
+        <div class="custom-breadcrumbs">
+          <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>Search Result</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="site-section services-section bg-light block__62849" id="next-section">
+  <div class="container">
+
+    <div class="row">
+      {% for job in page_obj %}
+      <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">
+        <a href="{% url 'jobapp:single-job' job.id %}" class="block__16443 min-h text-center d-block">
+          <span class="custom-icon mx-auto"><span class="icon-magnet d-block"></span></span>
+          <h3>{{ job.title }}</h3>
+          <ul class="job-listing-meta list-unstyled pl-3 mb-0">
+            <li class="menu-fix mb-2">
+              {% if job.job_type == '1' %}
+              <span class="badge badge-primary">
+                Full Time
+              </span>
+              {% elif job.job_type == '2'%}
+              <span class="badge badge-danger">
+                Part Time
+              </span>
+              {% else  %}
+              <span class="badge badge-info">
+                Internship
+              </span>
+              {% endif %}</li>
+            <li class="badge badge-secondary menu-fix mb-2"> {{ job.location }}</li>
+          </ul>
+          <p>{{ job.description | safe | truncatechars:100}}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% include 'jobapp/paginator.html' %}
+
+  </div>
+</section>
+
+{% endblock content %}

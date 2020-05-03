@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+
+
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">{{ applicant.get_full_name }}</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Applicant</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section block__18514" id="next-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 mr-auto">
+            <div class="border p-4 rounded">
+              <ul class="list-unstyled block__47528 mb-0">
+                <li><span class="active">Graphic Design</span></li>
+                <li><a href="#">Topic 1</a></li>
+                <li><a href="#">Topic 2</a></li>
+          
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <span class="text-primary d-block mb-5"><span class="icon-magnet display-1"></span></span>
+            <h2 class="mb-4">{{ applicant.get_full_name }}</h2>
+            <p><h3>Email :</h3>{{ applicant.email }}</p>
+            <p><h3>Gender :</h3>
+                {% if applicant.gender == 'M' %}
+                    Male
+                {% else %}
+                    Female
+                {% endif %}
+            </p>
+            <p><a href="mailto:{{ applicant.email }}" class="btn btn-primary btn-md mt-4">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+
+{% endblock %}

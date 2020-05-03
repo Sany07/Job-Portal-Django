@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
   {% block content %}
 
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1 class="text-white font-weight-bold">Sign Up/Login</h1>
+            <h1 class="text-white font-weight-bold">Employee/Sign Up</h1>
             <div class="custom-breadcrumbs">
-              <a href="#">Home</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>Log In</strong></span>
+              <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Sign Up</strong></span>
             </div>
           </div>
         </div>
@@ -45,11 +46,11 @@
              <div class="row form-group mb-4">
                 <div class="col-md-12 mb-3 mb-md-0">
                       <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="M" id="male gender" value="male">
+                          <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
                           <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="F" id="female" value="female">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="F">
                             <label class="form-check-label" for="female">Female</label>
                         </div>
                 </div>

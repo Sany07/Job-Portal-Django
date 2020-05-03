@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
+    id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">All Applicants </h1>
+                <div class="custom-breadcrumbs">
+                    <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+                    <a href="{% url 'jobapp:dashboard' %}">Dashboard</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>All Applicants </strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="site-section">
+    <div class="container">
+        <div class="row">
+            
+                <h1 class="text-center">All applicants </h1>
+            
+          
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Job Title</th>
+                            <th>Applied Date</th>
+                            <th>View </th>
+                  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for applicant in all_applicants %}
+                        <tr>
+                            <th scope="row"><a href="">{{ applicant.user.get_full_name }}</a></th>
+                            <td>{{ applicant.job.title }}</td>
+                            <td>{{ applicant.timestamp }}</td>
+                            <td><a href="{% url 'jobapp:applicant-details' applicant.user.id %}">Click</a></td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
