@@ -18,17 +18,18 @@ https://github.com/Sany07/Job-Portal.git
 pip install -r requirements.txt
 ```
 
+## To migrate the database open terminal in project directory and type
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
 ## Collects all static files in your apps
 
 ```
 python manage.py collectstatic
 ```
 
-## To migrate the database open terminal in project directory and type
-```
-python manage.py makemigrations</code><br>
-python manage.py migrate
-```
 ## Run the server
 
 ```
