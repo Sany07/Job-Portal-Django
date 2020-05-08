@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 
-<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
-    id="home-section">
+<section class="section-hero overlay inner-page bg-image"
+    style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
     <div class="container">
         <div class="row">
             <div class="col-md-7">
@@ -22,14 +22,17 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 mb-5">
-        {% if user.role == "employer" %}
-                <h2 class="mb-4 text-center">Job Post List</h2>
+
+
 
                 {% include 'messages.html' %}
 
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+                <div class="card">
+                    {% if user.role == "employer" %}
+                    <h5 class="card-header text-center">My All Posts</h5>
+                    {% if jobs %}
+                    <table class="table text-center mt-5">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>Job Title</th>
                                 <th>Posted Date</th>
@@ -41,64 +44,63 @@
                         <tbody>
                             {% for job in jobs %}
                             <tr>
-                                <th scope="row"><a href="{% url 'jobapp:single-job' job.id %}">{{ job.title }}</a></th>
+                                <td><a href="{% url 'jobapp:single-job' job.id %}">{{ job.title }}</a></td>
                                 <td>{{ job.timestamp | date:'M d, Y'  }}</td>
                                 <td>{{ job.last_date | date:'M d, Y' }}</td>
-                                <td>
-                                    <a href="{% url 'jobapp:applicants' job.id %}"><i class="fa fa-users"></i>{{ job.applicants.count }}
+                                <td><a href="{% url 'jobapp:applicants' job.id %}"><i
+                                            class="fa fa-users"></i>{{ job.applicants.count }}
                                         <span class="hidden-xs hidden-sm">Applicants</span> </a>
                                 </td>
                                 <td>
-                                    <ul class="list-unstyled">
-                                        <li><a href="{% url 'jobapp:edit-job' job.id %}">Edit</a></li>
-                                        <li><a href="{% url 'jobapp:delete' job.id %}"> Delete </a></li>
-                                    </ul>
+                                    <a class="btn btn-info btn-sm" href="{% url 'jobapp:edit-job' job.id %}"
+                                        role="button">Edit</a>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'jobapp:delete' job.id %}"
+                                        role="button">Delete</a>
                                 </td>
-
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    {% else %}
+                    <p>You have not any job yet !! <a href="{% url 'jobapp:create-job' %}">Create a new one.</a></p>
+                    {% endif %}
+                    {% elif user.role == "employee" %}
+                    <h5 class="card-header text-center">My Bookmarks Posts</h5>
+                    {% if savedjobs %}
+                    <table class="table text-center mt-5">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Posted Date</th>
+                                <th>Date expiring</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in savedjobs %}
+                            <tr>
+                                <td><a href="{% url 'jobapp:single-job' job.id %}">{{ job.job.title }}</a></td>
+                                <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                <td>{{ job.job.last_date | date:'M d, Y' }}</td>
+                                <td>
+                          
+                                    <a class="btn btn-danger btn-sm" href="{% url 'jobapp:delete-bookmark' job.id %}"
+                                        role="button">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>You have not any save job yet !! </p>
+                    {% endif %}
+                    {% endif %}
+
                 </div>
             </div>
-    {% elif user.role == "employee" %}
-    <h2 class="mb-4 text-center">Saved Job List</h2>
-
-    {% include 'messages.html' %}
-
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Job Title</th>
-                    <th>Posted Date</th>
-                    <th>Date expiring</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for job in savedjobs %}
-                <tr>
-                    <th scope="row"><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></th>
-                    <td>{{ job.timestamp | date:'M d, Y'  }}</td>
-                    <td>{{ job.job.last_date | date:'M d, Y' }}</td>
- 
-                    <td>
-                        <ul class="list-unstyled">
-                            <li><a href="{% url 'jobapp:delete-bookmark' job.id %}"> Delete </a></li>
-                        </ul>
-                    </td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-    {% endif %}
         </div>
+
+    </div>
     </div>
 </section>
-
-
 {% endblock %}

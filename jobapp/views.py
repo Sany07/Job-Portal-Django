@@ -20,7 +20,7 @@ def home_view(request):
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()
 
-    paginator = Paginator(jobs, 10)
+    paginator = Paginator(jobs, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
