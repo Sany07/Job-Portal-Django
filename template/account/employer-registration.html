@@ -23,13 +23,14 @@
     <div class="row">
       <div class="col-lg-12 mb-5">
         <h2 class="mb-4 text-center">Sign Up To JobBoard</h2>
+        {% include 'messages.html' %}
 
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
         <div class="alert alert-danger alert-dismissable">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ error|escape }}</strong>
+          <strong>{{ field.label|capfirst }} {{ error|escape }}</strong>
         </div>
         {% endfor %}
         {% endfor %}

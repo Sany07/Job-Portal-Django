@@ -1695,6 +1695,10 @@ h1, h2, h3, h4 {
   
 }
 
+
+.ov-fix{
+  overflow:hidden
+}
 /* CKEditor */
 .django-ckeditor-widget {
     width: 100% ;

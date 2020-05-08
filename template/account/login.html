@@ -20,8 +20,10 @@
 <section class="site-section">
   <div class="container">
     <div class="row">
+
       <div class="col-lg-12 mb-5">
-        <h2 class="mb-4">Sign Up To JobBoard</h2>
+
+        {% include 'messages.html' %}
 
         {% if form.errors %}
         {% for field in form %}
@@ -44,6 +46,7 @@
           {% for field in form %}
           <div class="row form-group">
             <div class="col-md-12 mb-3 mb-md-0">
+              
               <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
               <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
                 id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">

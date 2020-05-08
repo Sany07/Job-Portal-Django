@@ -60,9 +60,16 @@
                   </ul>
                 </li>
 
-                <a href="{% url 'account:logout' %}"
+                <li class="pr-3 has-children">
+                  <a>Dashboard</a> 
+                  <ul class="dropdown">
+                    <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                  </ul>
+                </li>
+                <!-- <a href="{% url 'account:logout' %}"
                 class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-                  class="mr-2 icon-lock_outline"></span>Log Out</a>
+                  class="mr-2 icon-lock_outline"></span>Log Out</a> -->
                 {% else %}
 
                 <li class="pr-3 has-children">
@@ -74,7 +81,7 @@
                 </li>
 
                 <a href="{% url 'account:login' %}"
-                  class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
+                  class="js-clone-nav btn btn-primary border-width-2 d-none d-lg-inline-block ov-fix"><span
                     class="mr-2 icon-lock_outline"></span>Log In</a>
                 {% endif %}
               </ul>
@@ -84,4 +91,5 @@
             class="icon-menu h3 m-0 p-0 mt-2"></span></a>
       </div>
     </div>
+
   </header>

@@ -45,7 +45,7 @@
               {% endif %}</li>
             <li class="badge badge-secondary menu-fix mb-2"> {{ job.location }}</li>
           </ul>
-          <p>{{ job.description | safe | truncatechars:100}}</p>
+          <p>{{ job.description | safe | truncatechars:150}}</p>
         </a>
       </div>
       {% endfor %}

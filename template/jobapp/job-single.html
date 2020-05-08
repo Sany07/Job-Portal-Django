@@ -6,8 +6,8 @@
 <!-- HOME -->
 
 
-<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
-  id="home-section">
+<section class="section-hero overlay inner-page bg-image"
+  style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
   <div class="container">
     <div class="row">
       <div class="col-md-7">
@@ -25,6 +25,8 @@
 
 <section class="site-section">
   <div class="container">
+    {% include 'messages.html' %}
+
     <div class="row align-items-center mb-5">
       <div class="col-lg-8 mb-4 mb-lg-0">
         <div class="d-flex align-items-center">
@@ -34,7 +36,7 @@
           <div>
             <h2>{{ job.title }}</h2>
             <div>
-              <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>{{ job.company_name }}</span>
+              <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span><a href="{{ job.url }}">{{ job.company_name }}</a></span>
               <span class="m-2"><span class="icon-room mr-2"></span>{{ job.location }}</span>
               <span class="m-2"><span class="icon-clock-o mr-2"></span>
                 <span class="text-primary">
@@ -55,39 +57,44 @@
       <div class="col-lg-4">
         <div class="row">
           <div class="col-5">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.role == 'employee' %}
             {% is_job_already_saved job request.user as is_saved %}
-              {% if is_saved %}
-              <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Saved</a>
-              {% else %}
-
-              <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="job" value="{{ job.id }}">
-               <input type="submit" class="btn btn-block btn-light btn-md" value="Save Job" />
-              
-                </form>
-
-              {% endif %}
+            {% if is_saved %}
+            <span href="#" class="btn btn-block btn-light btn-md"><span
+                class="icon-heart-o mr-2 text-danger"></span>Saved</span>
             {% else %}
 
-              <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="job" value="{{ job.id }}">
+            <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job" value="{{ job.id }}">
+              <input type="submit" class="btn btn-block btn-light btn-md" value="Save Job" />
 
-                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-              </form>
+            </form>
+
+            {% endif %}
+            
+            {% elif user.role == 'employer' %}
+
+            <a href="{% url 'jobapp:delete' job.id %}" class="btn btn-block btn-light btn-md">Delete</a>
+            {% else %}
+
+            <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job" value="{{ job.id }}">
+
+              <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+            </form>
 
             {% endif %}
 
           </div>
 
           <div class="col-7">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.role == 'employee' %}
             {% is_job_already_applied job request.user as is_applied %}
             {% if is_applied %}
 
-            <a href="#" class="btn btn-block btn-danger btn-md">Already Applied</a>
+            <span  class="btn btn-block btn-danger btn-md">Already Applied</span>
 
             {% else %}
 
@@ -98,6 +105,10 @@
               <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now" />
             </form>
             {% endif %}
+            
+          {% elif user.role == 'employer' %}
+
+          <a href="{% url 'jobapp:edit-job' job.id %}" class="btn btn-block btn-danger btn-md">Edit</a>
             {% else %}
             <form action="{% url 'jobapp:apply-job' job.id %}" method="POST">
               {% csrf_token %}
@@ -123,33 +134,38 @@
         <div class="row mb-5">
           <div class="col-6">
 
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.role == 'employee' %}
             {% is_job_already_saved job request.user as is_saved %}
-              {% if is_saved %}
-              <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already Saved
-                Job</span>
-              {% else %}
-
-              <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="job" value="{{ job.id }}">
-               <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-              
-                </form>
-
-              {% endif %}
+            {% if is_saved %}
+            <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
+              Saved
+              Job</span>
             {% else %}
 
-              <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="job" value="{{ job.id }}">
+            <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job" value="{{ job.id }}">
+              <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
 
-                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-              </form>
+            </form>
+
+            {% endif %}
+
+            {% elif user.role == 'employer' %}
+
+            <a href="{% url 'jobapp:delete' job.id %}" class="btn btn-block btn-light btn-md">Delete</a>
+            {% else %}
+
+            <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job" value="{{ job.id }}">
+
+              <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+            </form>
 
             {% endif %}
           </div>
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and  user.role == 'employee' %}
           {% is_job_already_applied job request.user as is_applied %}
           {% if is_applied %}
 
@@ -167,6 +183,12 @@
             </form>
           </div>
           {% endif %}
+
+          {% elif user.role == 'employer' %}
+          <div class="col-6">
+
+            <a href="{% url 'jobapp:edit-job' job.id %}" class="btn btn-block btn-danger btn-md">Edit</a>
+          </div>
 
           {% else %}
           <div class="col-6">
@@ -193,7 +215,8 @@
               Part Time
               {% else  %}
               Internship
-              {% endif %}</li>
+              {% endif %}
+            </li>
             <li class="mb-2"><strong class="text-black">Job Location:</strong> {{ job.location }}</li>
             <li class="mb-2"><strong class="text-black">Salary:</strong> {{ job.salary }}</li>
             <li class="mb-2"><strong class="text-black">Application Deadline:</strong> {{ job.last_date|date:"d M Y" }}
@@ -215,6 +238,7 @@
     </div>
   </div>
 </section>
+{% if page_obj %}
 
 <section class="site-section" id="next">
   <div class="container">
@@ -264,5 +288,6 @@
 
   </div>
 </section>
+{% endif %}
 
 {% endblock content %}

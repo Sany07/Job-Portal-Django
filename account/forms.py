@@ -10,12 +10,13 @@ class EmployeeRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         UserCreationForm.__init__(self, *args, **kwargs)
-        # self.fields['gender'].required = True
+        self.fields['gender'].required = True
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
         self.fields['password1'].label = "Password :"
         self.fields['password2'].label = "Confirm Password :"
         self.fields['email'].label = "Email :"
+        self.fields['gender'].label = "Gender :"
 
         self.fields['first_name'].widget.attrs.update(
             {
@@ -66,6 +67,8 @@ class EmployeeRegistrationForm(UserCreationForm):
 class EmployerRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         UserCreationForm.__init__(self, *args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['first_name'].label = "Company Name"
         self.fields['last_name'].label = "Company Address"
         self.fields['password1'].label = "Password"

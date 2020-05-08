@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+  {% block content %}
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url({% static 'images/hero_1.jpg' %});" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">Post A Job</h1>
+            <div class="custom-breadcrumbs">
+              <a href="#">Home</a> <span class="mx-2 slash">/</span>
+              <a href="#">Job</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Edit Job</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="site-section">
+      <div class="container">
+
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-12 mb-4 mb-lg-0">
+              <div class="text-center">
+                <h2>Edit Job</h2>
+                
+              </div>
+              {% include 'messages.html' %}
+          </div>
+        </div>
+        <form  method="POST" enctype="multipart/form-data">
+        <div class="row mb-5 p-4 p-md-5 border rounded">
+          <div class="col-lg-12">
+              <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
+                  {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger alert-dismissable">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+            {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name == 'job_type'  %}
+                        <div class="form-group">
+                        <label for="job-type">Job Type</label>
+                        <select name="job_type" class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Job Type">
+                            
+                            
+                              <option value="1" {% if field.value == '1' %} selected {% endif %}>Full time</option>
+                              <option value="2" {% if field.value == '2' %} selected {% endif %}>Part time</option>
+                              <option value="3" {% if field.value == "3" %} selected {% endif %}>Internship</option>
+                        </select>
+                        </div>
+                    
+                    {% elif field.name == 'category' %}
+                        <div class="form-group">
+                        <label for="job-type">Category</label>
+                        <select name="category" class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Job Type">
+                              
+                              {% for category in categories %}
+                              
+                                    <option value="{{ category.id }}" {% if category.id  ==  field.value %} selected {% endif %}>{{ category.name }}</option>
+
+                              {% endfor %}
+
+
+                             
+                        </select>
+                        </div>
+                                           
+                        {% elif field.name == 'description' %}
+                              <div class="form-group">
+                                <label for="job-type">Description</label>
+                                 <div class="">
+                                  {{ form.media }}
+                                  {{ form.description }}
+                              </div>
+                              </div>
+                        {% elif field.name == 'company_description' %}
+                              <div class="form-group">
+                                <label for="job-type">Company Description</label>
+                              <div class="">
+                                
+                                  {{ form.media }}
+                                  {{ form.company_description }}
+                              </div>
+                              </div>
+                        {% else %}
+                          {% if field.name == 'company_name'%}
+                              <h3 class="text-black mt-5 mb-5 border-bottom pb-2">Company Details</h3>
+                          {% endif%}
+                        <div class="form-group">
+                            <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+                            <input type="{{ field.field.widget.input_type }}"
+                                   class="form-control"
+                                   name="{{ field.name }}"
+                                   id="id_{{ field.name }}"
+                                   value="{{ field.value }}"
+                                   placeholder="{{ field.field.widget.attrs.placeholder }}">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+          </div>    
+        </div>
+
+        
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-4 ml-auto">
+            <div class="row">
+              <div class="col-6">
+
+                <input class="btn btn-block btn-primary btn-md" type="submit" value="Update" >
+              </div>
+            </div>
+          </div>
+            </form>
+
+        </div>
+      </div>
+    </section>
+{% endblock %}

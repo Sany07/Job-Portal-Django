@@ -11,26 +11,22 @@
                 <div class="custom-breadcrumbs">
                     <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
                     <a href="{% url 'jobapp:job-list' %}">Job</a> <span class="mx-2 slash">/</span>
-                    <span class="text-white"><strong>{{ job.title }}</strong></span>
+                    <span class="text-white"><strong>Dashboard</strong></span>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <section class="site-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 mb-5">
+        {% if user.role == "employer" %}
+                <h2 class="mb-4 text-center">Job Post List</h2>
 
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-danger alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>{{ message }}</strong>
-                </div>
-    
-              {% endfor %}
-                {% endif %}
+                {% include 'messages.html' %}
+
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -54,7 +50,7 @@
                                 </td>
                                 <td>
                                     <ul class="list-unstyled">
-                                        <!-- <li><a href="">Edit</a></li> -->
+                                        <li><a href="{% url 'jobapp:edit-job' job.id %}">Edit</a></li>
                                         <li><a href="{% url 'jobapp:delete' job.id %}"> Delete </a></li>
                                     </ul>
                                 </td>
@@ -65,8 +61,44 @@
                     </table>
                 </div>
             </div>
+    {% elif user.role == "employee" %}
+    <h2 class="mb-4 text-center">Saved Job List</h2>
+
+    {% include 'messages.html' %}
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Posted Date</th>
+                    <th>Date expiring</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in savedjobs %}
+                <tr>
+                    <th scope="row"><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></th>
+                    <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                    <td>{{ job.job.last_date | date:'M d, Y' }}</td>
+ 
+                    <td>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'jobapp:delete-bookmark' job.id %}"> Delete </a></li>
+                        </ul>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    {% endif %}
         </div>
     </div>
 </section>
+
 
 {% endblock %}
