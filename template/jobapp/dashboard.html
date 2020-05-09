@@ -79,7 +79,7 @@
                         <tbody>
                             {% for job in savedjobs %}
                             <tr>
-                                <td><a href="{% url 'jobapp:single-job' job.id %}">{{ job.job.title }}</a></td>
+                                <td><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></td>
                                 <td>{{ job.timestamp | date:'M d, Y'  }}</td>
                                 <td>{{ job.job.last_date | date:'M d, Y' }}</td>
                                 <td>
