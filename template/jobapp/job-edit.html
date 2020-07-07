@@ -74,7 +74,18 @@
                              
                         </select>
                         </div>
-                                           
+                        
+                        {% elif field.name == 'last_date' %}
+                        <div class="form-group">
+                          <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+                          <input type="{{ field.field.widget.input_type }}"
+                                 class="form-control"
+                                 name="{{ field.name }}"
+                                 id="id_{{ field.name }}"
+                                 value="{{ field.value|date:"Y-d-m" }}"
+                                 placeholder="{{ field.field.widget.attrs.placeholder }}">
+                      </div>
+
                         {% elif field.name == 'description' %}
                               <div class="form-group">
                                 <label for="job-type">Description</label>

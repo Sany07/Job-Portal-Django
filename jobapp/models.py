@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 User = get_user_model()
 
 
@@ -40,6 +41,7 @@ class Job(models.Model):
     def __str__(self):
         return self.title
 
+ 
 
 class Applicant(models.Model):
 
@@ -51,6 +53,8 @@ class Applicant(models.Model):
     def __str__(self):
         return self.job.title
 
+
+  
 
 class BookmarkJob(models.Model):
 

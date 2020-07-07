@@ -117,8 +117,9 @@ def search_result_view(request):
         job_title_or_company_name = request.GET['job_title_or_company_name']
 
         if job_title_or_company_name:
-            job_list = job_list.filter(title__icontains=job_title_or_company_name) | job_list.filter(company_name__icontains=job_title_or_company_name)
-    
+            job_list = job_list.filter(title__icontains=job_title_or_company_name) | job_list.filter(
+                company_name__icontains=job_title_or_company_name)
+
     # location
     if 'location' in request.GET:
         location = request.GET['location']
@@ -131,7 +132,6 @@ def search_result_view(request):
         if job_type:
             job_list = job_list.filter(job_type__iexact=job_type)
 
-
     # job_title_or_company_name = request.GET.get('text')
     # location = request.GET.get('location')
     # job_type = request.GET.get('type')
@@ -143,6 +143,8 @@ def search_result_view(request):
     #         Q(location__icontains=location)
     #     ).distinct()
 
+    # job_list = Job.objects.filter(job_type__iexact=job_type) | Job.objects.filter(
+    #     location__icontains=location) | Job.objects.filter(title__icontains=text) | Job.objects.filter(company_name__icontains=text)
 
     paginator = Paginator(job_list, 10)
     page_number = request.GET.get('page')
@@ -173,7 +175,8 @@ def apply_job_view(request, id):
                 instance.user = user
                 instance.save()
 
-                messages.success(request, 'You have successfully applied for this job!')
+                messages.success(
+                    request, 'You have successfully applied for this job!')
                 return redirect(reverse("jobapp:single-job", kwargs={
                     'id': id
                 }))
@@ -202,18 +205,24 @@ def dashboard_view(request):
     """
     jobs = []
     savedjobs = []
+    total_applicants = {}
     if request.user.role == 'employer':
 
         jobs = Job.objects.filter(user=request.user.id)
-        print('1')
+        for job in jobs:
+            count = Applicant.objects.filter(job=job.id).count()
+            total_applicants[job.id] = count
 
-    else:
+    if request.user.role == 'employee':
         savedjobs = BookmarkJob.objects.filter(user=request.user.id)
     context = {
 
         'jobs': jobs,
-        'savedjobs': savedjobs
+        'savedjobs': savedjobs,
+        'total_applicants': total_applicants
     }
+
+    print(context)
     return render(request, 'jobapp/dashboard.html', context)
 
 
@@ -227,20 +236,6 @@ def delete_job_view(request, id):
 
         job.delete()
         messages.success(request, 'Your Job Post was successfully deleted!')
-    
-    return redirect('jobapp:dashboard')
-
-
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employee
-def delete_bookmark_view(request, id):
-
-    job = get_object_or_404(BookmarkJob, id=id, user=request.user.id)
-
-    if job:
-
-        job.delete()
-        messages.success(request, 'Saved Job was successfully deleted!')
 
     return redirect('jobapp:dashboard')
 
@@ -257,6 +252,20 @@ def all_applicants_view(request, id):
     }
 
     return render(request, 'jobapp/all-applicants.html', context)
+
+
+@login_required(login_url=reverse_lazy('account:login'))
+@user_is_employee
+def delete_bookmark_view(request, id):
+
+    job = get_object_or_404(BookmarkJob, id=id, user=request.user.id)
+
+    if job:
+
+        job.delete()
+        messages.success(request, 'Saved Job was successfully deleted!')
+
+    return redirect('jobapp:dashboard')
 
 
 @login_required(login_url=reverse_lazy('account:login'))
@@ -290,16 +299,17 @@ def job_bookmark_view(request, id):
                 instance.user = user
                 instance.save()
 
-                messages.success(request, 'You have successfully save this job!')
+                messages.success(
+                    request, 'You have successfully save this job!')
                 return redirect(reverse("jobapp:single-job", kwargs={
                     'id': id
                 }))
 
         else:
             return redirect(reverse("jobapp:single-job", kwargs={
-            'id': id
-        }))
-    
+                'id': id
+            }))
+
     else:
         messages.error(request, 'You already saved this Job!')
 

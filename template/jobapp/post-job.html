@@ -86,6 +86,13 @@
                                   {{ form.description }}
                               </div>
                               </div>
+                        {% elif field.name == 'last_date' %}
+                        <div class="form-group">
+                          <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+                          <input type="text" class="form-control appointment_date" placeholder="Select Date"
+											    name="{{ field.name }}" id='id="id_{{ field.name }}"' required="true">
+  
+                      </div>
                         {% elif field.name == 'company_description' %}
                               <div class="form-group">
                                 <label for="job-type">Company Description</label>
@@ -111,7 +118,6 @@
                 {% endfor %}
           </div>    
         </div>
-
         
         <div class="row align-items-center mb-5">
           <div class="col-lg-4 ml-auto">

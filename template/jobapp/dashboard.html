@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load get_total_applicant %}
 {% block content %}
 
 <section class="section-hero overlay inner-page bg-image"
@@ -47,9 +48,33 @@
                                 <td><a href="{% url 'jobapp:single-job' job.id %}">{{ job.title }}</a></td>
                                 <td>{{ job.timestamp | date:'M d, Y'  }}</td>
                                 <td>{{ job.last_date | date:'M d, Y' }}</td>
-                                <td><a href="{% url 'jobapp:applicants' job.id %}"><i
-                                            class="fa fa-users"></i>{{ job.applicants.count }}
-                                        <span class="hidden-xs hidden-sm">Applicants</span> </a>
+                                <td>
+
+                                    {% get_total_applicant total_applicants job as is_applicant %}
+
+                                    {% if is_applicant %}
+                                    <a href="{% url 'jobapp:applicants' job.id %}">
+                                        <i class="fa fa-users"></i>
+                                        <div class="btn btn-success btn-sm text-white">
+
+
+                                       
+                                            {% if is_applicant > 1 %}
+
+
+                                            {% get_total_applicant total_applicants job %} Applicants
+
+                                            {% else %}
+
+                                            {% get_total_applicant total_applicants job %} Applicant
+
+                                            {% endif %}
+
+                                        </div>
+                                        
+                                    </a>
+                                    {% endif %}
+
                                 </td>
                                 <td>
                                     <a class="btn btn-info btn-sm" href="{% url 'jobapp:edit-job' job.id %}"
@@ -83,7 +108,7 @@
                                 <td>{{ job.timestamp | date:'M d, Y'  }}</td>
                                 <td>{{ job.job.last_date | date:'M d, Y' }}</td>
                                 <td>
-                          
+
                                     <a class="btn btn-danger btn-sm" href="{% url 'jobapp:delete-bookmark' job.id %}"
                                         role="button">Delete</a>
                                 </td>

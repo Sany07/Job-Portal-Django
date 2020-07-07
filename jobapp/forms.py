@@ -18,7 +18,7 @@ class JobForm(forms.ModelForm):
         self.fields['salary'].label = "Salary :"
         self.fields['description'].label = "Job Description :"
         self.fields['tags'].label = "Tags :"
-        self.fields['last_date'].label = "Dead Line :"
+        self.fields['last_date'].label = "Submission Deadline :"
         self.fields['company_name'].label = "Company Name :"
         self.fields['url'].label = "Website :"
 
@@ -46,6 +46,7 @@ class JobForm(forms.ModelForm):
         self.fields['last_date'].widget.attrs.update(
             {
                 'placeholder': 'YYYY-MM-DD ',
+                
             }
         )        
         self.fields['company_name'].widget.attrs.update(
@@ -59,11 +60,6 @@ class JobForm(forms.ModelForm):
             }
         )    
 
-    
-        last_date = forms.CharField(widget=forms.TextInput(attrs={
-                    'placeholder': 'Service Name',
-                    'class' : 'datetimepicker1'
-                }))
 
     class Meta:
         model = Job

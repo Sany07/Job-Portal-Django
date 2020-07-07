@@ -64,7 +64,7 @@ def employer_registration(request):
 def employee_edit_profile(request, id=id):
 
     """
-    Handle Employee Profile Update
+    Handle Employee Profile Update Functionality
 
     """
 

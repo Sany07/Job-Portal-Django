@@ -20,9 +20,8 @@
     <div class="container">
         <div class="row">
             
-                <h1 class="text-center">All applicants </h1>
+                <h1 class="text-center"> All applicants </h1>
             
-          
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -36,6 +35,8 @@
                     </thead>
                     <tbody>
                         {% for applicant in all_applicants %}
+                {{ applicant.get_total_applicant }}
+
                         <tr>
                             <th scope="row"><a href="">{{ applicant.user.get_full_name }}</a></th>
                             <td>{{ applicant.job.title }}</td>
