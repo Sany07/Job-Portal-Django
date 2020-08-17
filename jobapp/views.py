@@ -167,7 +167,6 @@ def apply_job_view(request, id):
     applicant = Applicant.objects.filter(user=user, job=id)
 
     if not applicant:
-
         if request.method == 'POST':
 
             if form.is_valid():
