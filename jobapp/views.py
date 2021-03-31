@@ -16,7 +16,7 @@ User = get_user_model()
 
 def home_view(request):
 
-    jobs = Job.objects.order_by('-timestamp')
+    jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()
 

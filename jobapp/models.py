@@ -35,6 +35,7 @@ class Job(models.Model):
     company_description = RichTextField(blank=True, null=True)
     url = models.URLField(max_length=200)
     last_date = models.DateField()
+    is_published = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now=True)
 
 
