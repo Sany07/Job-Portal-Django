@@ -39,7 +39,7 @@ def job_list_View(request):
     """
 
     """
-    job_list = Job.objects.filter(is_published=True).order_by('-timestamp')
+    job_list = Job.objects.filter(is_published=True, is_closed=True).order_by('-timestamp')
     paginator = Paginator(job_list, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -72,7 +72,8 @@ def create_job_View(request):
             instance.save()
             # for save tags
             form.save_m2m()
-
+            messages.success(
+                    request, 'You are successfully posted your job! Please wait for review.')
             return redirect(reverse("jobapp:single-job", kwargs={
                                     'id': instance.id
                                     }))
@@ -201,6 +202,7 @@ def dashboard_view(request):
     """
     jobs = []
     savedjobs = []
+    appliedjobs = []
     total_applicants = {}
     if request.user.role == 'employer':
 

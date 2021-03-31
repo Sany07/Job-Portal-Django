@@ -23,7 +23,7 @@ class Category(models.Model):
 
 class Job(models.Model):
 
-    user = models.ForeignKey(User, related_name='Use', on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE) 
     title = models.CharField(max_length=300)
     description = RichTextField()
     tags = TaggableManager()
