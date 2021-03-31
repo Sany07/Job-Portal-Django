@@ -23,12 +23,12 @@ def home_view(request):
     paginator = Paginator(jobs, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     context = {
 
         'total_candidates': total_candidates,
         'total_companies': total_companies,
         'total_jobs': len(jobs),
+        'total_completed_jobs': len(jobs.filter(is_closed=True)),
         'page_obj': page_obj
     }
     return render(request, 'jobapp/index.html', context)
@@ -38,7 +38,7 @@ def job_list_View(request):
     """
 
     """
-    job_list = Job.objects.order_by('-timestamp')
+    job_list = Job.objects.filter(is_published=True).order_by('-timestamp')
     paginator = Paginator(job_list, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -199,11 +199,9 @@ def apply_job_view(request, id):
 # @user_is_employee
 def dashboard_view(request):
     """
-
-
     """
     jobs = []
-    savedjobs = []
+    # savedjobs = []
     total_applicants = {}
     if request.user.role == 'employer':
 
@@ -214,14 +212,15 @@ def dashboard_view(request):
 
     if request.user.role == 'employee':
         savedjobs = BookmarkJob.objects.filter(user=request.user.id)
+        appliedjobs = Applicant.objects.filter(user=request.user.id)
     context = {
 
         'jobs': jobs,
         'savedjobs': savedjobs,
+        'appliedjobs':appliedjobs,
         'total_applicants': total_applicants
     }
 
-    print(context)
     return render(request, 'jobapp/dashboard.html', context)
 
 
@@ -237,6 +236,23 @@ def delete_job_view(request, id):
         messages.success(request, 'Your Job Post was successfully deleted!')
 
     return redirect('jobapp:dashboard')
+
+
+@login_required(login_url=reverse_lazy('account:login'))
+@user_is_employer
+def make_complete_job_view(request, id):
+    job = get_object_or_404(Job, id=id, user=request.user.id)
+
+    if job:
+        try:
+            job.is_closed = True
+            job.save()
+            messages.success(request, 'Your Job was marked closed!')
+        except:
+            messages.success(request, 'Something went wrong !')
+            
+    return redirect('jobapp:dashboard')
+
 
 
 @login_required(login_url=reverse_lazy('account:login'))

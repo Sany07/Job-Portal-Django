@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html>
-        {% include 'head.html' %}
-  <body id="top">
-
-
-  
-        {% include 'header.html' %}
-
-        {% block content %}
-
-        {% endblock %}
-
-        {% include 'footer.html' %}
-
-        {% include 'scripts.html' %} 
-
-    </body>
-  </html>
+      {% include 'head.html' %}
+      <body id="top">
+            {% include 'header.html' %}
+            {% block content %}{% endblock %}
+            {% include 'footer.html' %}
+            {% include 'scripts.html' %} 
+            {% block extra_scripts %} {% endblock %}
+      </body>
+</html>

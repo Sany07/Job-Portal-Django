@@ -36,6 +36,7 @@ class Job(models.Model):
     url = models.URLField(max_length=200)
     last_date = models.DateField()
     is_published = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now=True)
 
 

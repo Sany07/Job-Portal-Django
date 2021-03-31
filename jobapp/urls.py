@@ -19,6 +19,7 @@ urlpatterns = [
     path('dashboard/employer/job/<int:id>/applicants/', views.all_applicants_view, name='applicants'),
     path('dashboard/employer/job/edit/<int:id>', views.job_edit_view, name='edit-job'),
     path('dashboard/employer/applicant/<int:id>/', views.applicant_details_view, name='applicant-details'),
+    path('dashboard/employer/close/<int:id>/', views.make_complete_job_view, name='complete'),
     path('dashboard/employer/delete/<int:id>/', views.delete_job_view, name='delete'),
     path('dashboard/employee/delete-bookmark/<int:id>/', views.delete_bookmark_view, name='delete-bookmark'),
 
