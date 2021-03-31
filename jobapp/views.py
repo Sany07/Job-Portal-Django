@@ -16,7 +16,7 @@ User = get_user_model()
 
 def home_view(request):
 
-    jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
+    jobs = Job.objects.filter(is_published=True, is_closed=False).order_by('-timestamp')
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()
 
@@ -28,7 +28,7 @@ def home_view(request):
         'total_candidates': total_candidates,
         'total_companies': total_companies,
         'total_jobs': len(jobs),
-        'total_completed_jobs': len(jobs.filter(is_closed=True)),
+        'total_completed_jobs':len(jobs.filter(is_closed=True)),
         'page_obj': page_obj
     }
     return render(request, 'jobapp/index.html', context)
@@ -195,13 +195,11 @@ def apply_job_view(request, id):
 
 
 @login_required(login_url=reverse_lazy('account:login'))
-# @user_is_employer
-# @user_is_employee
 def dashboard_view(request):
     """
     """
     jobs = []
-    # savedjobs = []
+    savedjobs = []
     total_applicants = {}
     if request.user.role == 'employer':
 
