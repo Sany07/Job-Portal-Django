@@ -71,8 +71,6 @@
   </div>
 </section>
 
-
-
 <section class="site-section">
   <div class="container">
 
@@ -127,7 +125,7 @@
   {% endif %}
 </section>
 
-<section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
+<section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('{% static 'images/hero_1.jpg' %}');">
   <div class="container">
     {% if request.user.role == "employer" %}
     <div class="row align-items-center">
