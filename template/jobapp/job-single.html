@@ -74,8 +74,8 @@
             {% endif %}
             
             {% elif user.role == 'employer' %}
-
-            <a href="{% url 'jobapp:delete' job.id %}" class="btn btn-block btn-danger btn-md">Delete</a>
+            <button onclick="call_sw_alert_func('{% url 'jobapp:delete' job.id %}','{{ job.id }}','Once Deleted, You Will Not be Able To Recover This Post!')" class="btn btn-block btn-danger btn-md">Delete</button>
+                                   
             {% else %}
 
             <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
@@ -152,8 +152,8 @@
             {% endif %}
 
             {% elif user.role == 'employer' %}
-
-            <a href="{% url 'jobapp:delete' job.id %}" class="btn btn-block btn-danger btn-md">Delete</a>
+            <button onclick="call_sw_alert_func('{% url 'jobapp:delete' job.id %}','{{ job.id }}','Once Deleted, You Will Not be Able To Recover This Post!')" class="btn btn-block btn-danger btn-md">Delete</button>
+                                   
             {% else %}
 
             <form action="{% url 'jobapp:bookmark-job' job.id %}" method="POST">
@@ -289,5 +289,8 @@
   </div>
 </section>
 {% endif %}
-
 {% endblock content %}
+{% block extra_scripts %}
+    <script src="{% static 'js/sweet-alert.js' %}"></script>
+    <script src="{% static 'js/sweet-alert-ajax.js' %}"></script>
+{% endblock %}

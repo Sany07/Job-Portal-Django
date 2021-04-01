@@ -334,7 +334,7 @@ def job_bookmark_view(request, id):
         }))
 
 
-@login_required(login_url=reverse_lazy('accounts:login'))
+@login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def job_edit_view(request, id=id):
     """
