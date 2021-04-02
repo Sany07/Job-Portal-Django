@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'ckeditor',
-    'taggit',
-
     'jobapp.apps.JobappConfig',
     'account.apps.AccountConfig',
+
+    #3rd Party App
+    'ckeditor',
+    'taggit',
+    'user_visit',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'job.urls'
