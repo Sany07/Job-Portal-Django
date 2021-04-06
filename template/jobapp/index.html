@@ -71,7 +71,7 @@
   </div>
 </section>
 
-<section class="site-section">
+<section id="ajax_pag" class="site-section">
   <div class="container">
 
     {% if page_obj %}
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <ul class="job-listings mb-5">
+    <ul id="job" class="job-listings mb-5">
 
       {% for job in page_obj %}
       <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
@@ -120,7 +120,6 @@
       {% endfor %}
     </ul>
     {% include 'jobapp/paginator.html' %}
-
   </div>
   {% endif %}
 </section>
@@ -202,4 +201,85 @@
 
 </section>
 
+
 {% endblock %}
+{% block extra_scripts %}
+<script>
+
+  // console.log("sa");
+	$('a#ajax_paginator').click(function(event){
+		// preventing default actions
+    joblist = ``
+    paging = ``
+		event.preventDefault();
+		var page_ref = $(this).attr('href');
+    var page_number = page_ref.slice(6);
+    console.log(page_number);
+		// ajax call
+			$.ajax({
+					type: "GET",
+					// define url name
+					url: "{% url 'jobapp:home' %}", 
+					data : {    
+          page : page_number, 
+				},
+        success: function (response) {
+                    
+          $('#job').html('')
+                    response.job_lists.map(function (job) {
+
+                      console.log(response);
+                        joblist+=`
+                          <li id="job" class="s job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                              <a href=""></a>
+                              <div class="job-listing-logo">
+                                <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co"
+                                  class="img-fluid">
+                              </div>
+
+                              <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                                <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                                  <h2>${ job.title }</h2>
+                                  <strong>${ job.company_name }</strong>
+                                </div>
+                                <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                                  <span class="icon-room"></span>${ job.location } 
+                                </div>
+                                
+                                <div class="job-listing-meta">
+                                  ${ job.job_type == '1'
+                                  ?  
+                                  `<span class="badge badge-success">
+                                    Full Time
+                                  </span>`
+                                  : 
+                                  job.job_type == '2' 
+                                  ?  
+                                  `<span class="badge badge-danger">
+                                    Part Time
+                                  </span>` 
+                                  :
+                                  `<span class="badge badge-info">
+                                    Internship
+                                  </span>
+                                  `
+                                  }
+                                </div>
+                              </div>
+                            </li>
+                        ` 
+                        $('#job').html(joblist)
+                        console.log(job.next_page_number);
+                        paging+=`<a id="ajax_paginator" class="next" href="?page=${ job.next_page_number }">Next</a>`
+                        $('a#ajax_paginator').html()
+                    })},
+                    
+				error: function () {
+					alert('Error Occured');
+				}
+			}); 
+	});    
+	</script>
+{% endblock %}
+
+
