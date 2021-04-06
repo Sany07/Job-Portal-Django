@@ -5,22 +5,27 @@
   </div>
   <div class="col-md-6 text-center text-md-right">
     <div class="custom-pagination ml-auto">
+      
       {% if page_obj.has_previous %}
       <a id="ajax_paginator" href="?page={{ page_obj.previous_page_number }}" class="prev">Prev</a>
       {% endif %}
-
-      <div class="d-inline-block">
-        {% for i in page_obj.paginator.page_range %}
-        {% if page_obj.number == i %}
-        <a class="active">{{ i }}</a>
-        {% else %}
-        <a id="ajax_paginator" href="?page={{ i }}">{{ i }}</a>
-        {% endif %}
-        {% endfor %}
-      </div>
+      <span id="page_no">
+        <div class="d-inline-block">
+          {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+          <a class="active">{{ i }}</a>
+          {% else %}
+          <a class="" id="ajax_paginator" href="?page={{ i }}">{{ i }}</a>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </span>
       {% if page_obj.has_next %}
-      <a id="ajax_paginator" class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <div id="next_page">
+        <a id="ajax_paginator" class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </span>
       {% endif %}
+    
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@ def home_view(request):
     jobs = published_jobs.filter(is_closed=False)
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()
-    paginator = Paginator(jobs, 2)
+    paginator = Paginator(jobs, 1)
     page_number = request.GET.get('page',None)
     page_obj = paginator.get_page(page_number)
 
@@ -37,16 +37,17 @@ def home_view(request):
 
     if request.is_ajax():
         job_lists=[]
-        print(page_obj.next_page_number)
         job_objects_list = page_obj.object_list.values()
         for job_list in job_objects_list:
             job_lists.append(job_list)
+        
+        next_page_number = None
+        if page_obj.has_next():
+            next_page_number = page_obj.next_page_number()
 
-        print(page_obj.next_page_number)
-        n= page_obj.next_page_number
         data={
             'job_lists':job_lists,
-            'next_page_number':n
+            'next_page_number':next_page_number
         }    
         return JsonResponse(data)
     return render(request, 'jobapp/index.html', context)

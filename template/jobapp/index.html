@@ -206,15 +206,15 @@
 {% block extra_scripts %}
 <script>
 
-  // console.log("sa");
-	$('a#ajax_paginator').click(function(event){
+	$('div>a#ajax_paginator').on('click', '.yU', function(event) {
+		event.preventDefault();
+
 		// preventing default actions
     joblist = ``
     paging = ``
-		event.preventDefault();
 		var page_ref = $(this).attr('href');
     var page_number = page_ref.slice(6);
-    console.log(page_number);
+    console.log('page_number', page_number);
 		// ajax call
 			$.ajax({
 					type: "GET",
@@ -227,10 +227,8 @@
                     
           $('#job').html('')
                     response.job_lists.map(function (job) {
-
-                      console.log(response);
                         joblist+=`
-                          <li id="job" class="s job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                          <li id="next" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                               <a href=""></a>
                               <div class="job-listing-logo">
                                 <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co"
@@ -268,10 +266,13 @@
                               </div>
                             </li>
                         ` 
+                        console.log(job.title);
+
                         $('#job').html(joblist)
-                        console.log(job.next_page_number);
-                        paging+=`<a id="ajax_paginator" class="next" href="?page=${ job.next_page_number }">Next</a>`
-                        $('a#ajax_paginator').html()
+                        console.log(response.next_page_number);
+                        paging+=`<a id="ajax_paginator" id="next" class="next yU" href="?page=${ response.next_page_number }">Next</a>`
+                        
+                        $('div>#next_page').html(paging)
                     })},
                     
 				error: function () {
