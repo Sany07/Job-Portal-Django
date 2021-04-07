@@ -207,9 +207,7 @@
 <script>
 
 $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function( event ) {
-  
 		event.preventDefault();
-		// preventing default actions
     joblist = ``
     next_paging = ``
     prev_paging = ``
@@ -217,23 +215,18 @@ $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function(
 		var page_ref = $(this).attr('href');
     var page_number = page_ref.slice(6);
     console.log('page_number', page_number);
-		// ajax call
 		$.ajax({
 					type: "GET",
-					// define url name
 					url: "{% url 'jobapp:home' %}", 
 					data : {    
           page : page_number, 
 				},
         success: function (response) {
-          // setInterval(function(){ $('#spid').removeClass('spinner-border') }, 3000);          
           $('#job').html('')
-
                     response.job_lists.map(function (job) {
 
                         joblist+=`
                           <li id="next" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                            <a href="/job/${job.id}/"></a>
                               <div class="job-listing-logo">
                                 <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co"
                                   class="img-fluid">
@@ -270,20 +263,16 @@ $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function(
                               </div>
                             </li>
                         ` 
-
                       })
 
                         $('#job').html(joblist)
-                        console.log(response.prev_page_number);
-                        console.log(response.current_page_no);
-                        
                         response.next_page_number != null ?
                         next_paging+=`<a id="ajax_paginator" class="next" href="?page=${ response.next_page_number }">Next</a>`
                         : ''
 
                         $('div>#next_page').html(next_paging)
                         $('div>.active').removeClass('active')
-                        $('div>#ajax_paginator_'+response.current_page_no).addClass('active')
+                        $('div>.ajax_paginator_'+response.current_page_no).addClass('active')
                         
                         // .attr('href','http://example.com')
                         // .removeAttr("href");
@@ -296,7 +285,6 @@ $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function(
                         page_navigator+=`Showing ${ response.current_page_no } of ${ response.no_of_page } Pages`
                         $('div>#page_navigator').html(page_navigator)
                       
-                    
                     },
                     
 				error: function () {
