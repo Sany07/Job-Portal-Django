@@ -81,8 +81,8 @@
       </div>
     </div>
 
-    <ul id="job" class="job-listings mb-5">
 
+    <ul id="job" class="job-listings mb-5">
       {% for job in page_obj %}
       <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
         <a href="{% url 'jobapp:single-job' job.id %}"></a>
@@ -207,8 +207,8 @@
 <script>
 
 $("#ajax_listing_paginattion" ).delegate( "a", "click", function( event ) {
+  
 		event.preventDefault();
-
 		// preventing default actions
     joblist = ``
     next_paging = ``
@@ -226,9 +226,11 @@ $("#ajax_listing_paginattion" ).delegate( "a", "click", function( event ) {
           page : page_number, 
 				},
         success: function (response) {
-                    
+          // setInterval(function(){ $('#spid').removeClass('spinner-border') }, 3000);          
           $('#job').html('')
+
                     response.job_lists.map(function (job) {
+
                         joblist+=`
                           <li id="next" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                               <a href=""></a>
@@ -280,8 +282,11 @@ $("#ajax_listing_paginattion" ).delegate( "a", "click", function( event ) {
                         : ''
 
                         $('div>#next_page').html(next_paging)
+                        $('div>.active').removeClass('active')
                         $('div>#ajax_paginator_'+response.current_page_no).addClass('active')
-                        $('div>#ajax_paginator_'+response.prev_page_number).removeClass('active')
+                        
+                        // .attr('href','http://example.com')
+                        // .removeAttr("href");
                         
                         response.current_page_no > 1 ?
                         prev_paging+=`<a id="ajax_paginator" href="?page=${ response.prev_page_number }" class="prev">Prev</a>`
@@ -299,7 +304,9 @@ $("#ajax_listing_paginattion" ).delegate( "a", "click", function( event ) {
 				}
 			});
 
-	});    
+	});  
+  
+  
 	</script>
 {% endblock %}
 

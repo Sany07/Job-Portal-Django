@@ -15,7 +15,8 @@
         <div class="d-inline-block">
           {% for i in page_obj.paginator.page_range %}
           {% if page_obj.number == i %}
-          <a id="ajax_paginator_{{ i }}"  class="active">{{ i }}</a>
+          <a id="ajax_paginator_{{ i }}" class="active" href="?page={{ i }}">{{ i }}</a>
+
           {% else %}
           <a class="" id="ajax_paginator_{{ i }}" href="?page={{ i }}">{{ i }}</a>
           {% endif %}
