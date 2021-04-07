@@ -227,6 +227,7 @@ $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function(
 
                         joblist+=`
                           <li id="next" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                            <a href="/job/${job.id}/"></a>
                               <div class="job-listing-logo">
                                 <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co"
                                   class="img-fluid">
