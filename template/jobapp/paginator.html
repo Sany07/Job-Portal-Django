@@ -1,27 +1,29 @@
 {% if page_obj.has_other_pages %}
 <div class="row pagination-wrap">
   <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-    <span>Showing {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} Pages</span>
+    <span id="page_navigator">Showing {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} Pages</span>
   </div>
   <div class="col-md-6 text-center text-md-right">
     <div class="custom-pagination ml-auto">
       
+      <span id="prev_page">
       {% if page_obj.has_previous %}
       <a id="ajax_paginator" href="?page={{ page_obj.previous_page_number }}" class="prev">Prev</a>
       {% endif %}
+    </span>
       <span id="page_no">
         <div class="d-inline-block">
           {% for i in page_obj.paginator.page_range %}
           {% if page_obj.number == i %}
-          <a class="active">{{ i }}</a>
+          <a id="ajax_paginator_{{ i }}"  class="active">{{ i }}</a>
           {% else %}
-          <a class="" id="ajax_paginator" href="?page={{ i }}">{{ i }}</a>
+          <a class="" id="ajax_paginator_{{ i }}" href="?page={{ i }}">{{ i }}</a>
           {% endif %}
           {% endfor %}
         </div>
       </span>
       {% if page_obj.has_next %}
-      <div id="next_page">
+      <span id="next_page">
         <a id="ajax_paginator" class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
       </span>
       {% endif %}
