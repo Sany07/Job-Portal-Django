@@ -32,7 +32,7 @@ function call_sw_alert_func(route, id, message){
                   icon: "success",
                   button: "Done",
                 });
-                $("#change_job_status").html('<a class="text-white btn btn-success btn-sm" role="button">Closed</a>')
+                $("#change_job_status_"+id).html('<a class="text-white btn btn-success btn-sm" role="button">Closed</a>')
               }
             },
 

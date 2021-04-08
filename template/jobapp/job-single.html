@@ -173,7 +173,6 @@
             <span class="btn btn-block btn-danger btn-md">Already Applied</span>
           </div>
           {% else %}
-
           <div class="col-6">
             <form action="{% url 'jobapp:apply-job' job.id %}" method="POST">
               {% csrf_token %}

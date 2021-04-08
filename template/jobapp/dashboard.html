@@ -91,7 +91,7 @@
                                         role="button">Edit</a>
                                     {% if job.is_published == True %}
                                         {% if job.is_closed == False %}
-                                        <span id="change_job_status">
+                                        <span id="change_job_status_{{ job.id }}">
                                             <button onclick="call_sw_alert_func('{% url 'jobapp:complete' job.id %}','{{ job.id }}', 'Once Clicked, Your Post Will Marked Completed')" class="text-white btn btn-success btn-sm" >Make Close</button>
                                         </span>
                                         {% else %}
