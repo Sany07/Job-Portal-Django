@@ -1,11 +1,22 @@
 from django.contrib import admin
 from .models import *
 
-# Register your models here.
 
 admin.site.register(Category)
-admin.site.register(Applicant)
-admin.site.register(Job)
-admin.site.register(BookmarkJob)
+
+class ApplicantAdmin(admin.ModelAdmin):
+    list_display = ('job','user','timestamp')
+    
+admin.site.register(Applicant,ApplicantAdmin)
+
+
+class JobAdmin(admin.ModelAdmin):
+    list_display = ('title','is_published','is_closed','timestamp')
+
+admin.site.register(Job,JobAdmin)
+
+class BookmarkJobAdmin(admin.ModelAdmin):
+    list_display = ('job','user','timestamp')
+admin.site.register(BookmarkJob,BookmarkJobAdmin)
 
 
