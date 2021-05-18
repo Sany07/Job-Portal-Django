@@ -1,7 +1,7 @@
 # Job Portal
 Django Job Portal.  
 
-# Technology
+# Technology  
 
 ```
 Python 3.7.10
