@@ -58,6 +58,7 @@ python manage.py runserver
 
 ![Settings Window](https://raw.github.com/Sany07/Django-Job-Portal/master/screenshots/screencapture-127-0-0-1-8000-dashboard-employer-job-54-applicants-2020-05-08-17_01_34.png)
 
+
 <div align="center">
     <h3>========Thank You=========</h3>
 </div>
