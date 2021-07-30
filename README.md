@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 ```
 Set the database from settings.py
-```
+``` 
 
 ## To migrate the database open terminal in project directory and type
 ```
