@@ -34,7 +34,7 @@
             <img src="{% static 'images/job_logo_2.jpg' %}" alt="Image">
           </div>
           <div>
-            <h2>{{ job.title }} {{ request.user.id}} {{job.user.id}}</h2>
+            <h2>{{ job.title }}</h2>
             <div>
               <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span><a href="{{ job.url }}">{{ job.company_name }}</a></span>
               <span class="m-2"><span class="icon-room mr-2"></span>{{ job.location }}</span>
