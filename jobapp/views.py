@@ -365,11 +365,11 @@ def job_bookmark_view(request, id):
 @user_is_employer
 def job_edit_view(request, id=id):
     """
-    Handle Employee Profile Update
+    Handle Job Update
 
     """
 
-    job = get_object_or_404(Job, id=id)
+    job = get_object_or_404(Job, id=id, user=request.user.id)
     categories = Category.objects.all()
     form = JobEditForm(request.POST or None, instance=job)
     if form.is_valid():

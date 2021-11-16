@@ -96,7 +96,8 @@ class JobForm(forms.ModelForm):
     def save(self, commit=True):
         job = super(JobForm, self).save(commit=False)
         if commit:
-            user.save()
+            
+            job.save()
         return job
 
 
@@ -191,20 +192,21 @@ class JobEditForm(forms.ModelForm):
         job_type = self.cleaned_data.get('job_type')
 
         if not job_type:
-            raise forms.ValidationError("Service is required")
+            raise forms.ValidationError("Job Type is required")
         return job_type
 
     def clean_category(self):
         category = self.cleaned_data.get('category')
 
         if not category:
-            raise forms.ValidationError("category is required")
+            raise forms.ValidationError("Category is required")
         return category
 
 
     def save(self, commit=True):
         job = super(JobEditForm, self).save(commit=False)
+      
         if commit:
-            user.save()
+            job.save()
         return job
 

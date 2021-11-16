@@ -39,7 +39,7 @@
                 {% if user.is_authenticated and user.role == 'employer'  %}
                 <a href="{% url 'jobapp:create-job' %}"
                   class="js-clone-nav pr-3 btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                    class="mr-2 icon-add"></span>Post a Job</a>
+                    class="mr-2 icon-add"></span>Publish Job</a>
 
                   
                     <li class="pr-3 has-children">
@@ -50,7 +50,7 @@
                       </ul>
                     </li>
 
-                {% elif user.is_authenticated and user.role == 'employee'  %}
+                {% elif user.is_authenticated %}
 
                 <li class="pr-3 has-children">
                   <a>Profile</a>
