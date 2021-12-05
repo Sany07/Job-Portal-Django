@@ -2,7 +2,7 @@
 Django Job Portal.  
 
 
-## Installation
+## Installation 
 
 ```
 open terminal and type
