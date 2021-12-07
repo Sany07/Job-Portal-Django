@@ -1,5 +1,5 @@
 # Job Portal
-Django Job Portal.  
+Django Job Portal.   
 
 
 ## Installation 
