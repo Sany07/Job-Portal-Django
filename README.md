@@ -1,8 +1,8 @@
 # Job Portal
-Django Job Portal.  
+Django Job Portal.    
 
 
-## Installation
+## Installation 
 
 ```
 open terminal and type
