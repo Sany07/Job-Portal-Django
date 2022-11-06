@@ -7,7 +7,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.core.serializers import serialize
-
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 from account.models import User
 from jobapp.forms import *
@@ -61,7 +62,7 @@ def home_view(request):
     print('ok')
     return render(request, 'jobapp/index.html', context)
 
-
+@cache_page(60 * 15)
 def job_list_View(request):
     """
 
@@ -116,8 +117,11 @@ def single_job_view(request, id):
     """
     Provide the ability to view job details
     """
-
-    job = get_object_or_404(Job, id=id)
+    if cache.get(id):
+        job = cache.get(id)
+    else:
+        job = get_object_or_404(Job, id=id)
+        cache.set(id,job , 60 * 15)
     related_job_list = job.tags.similar_objects()
 
     paginator = Paginator(related_job_list, 5)

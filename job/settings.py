@@ -26,7 +26,7 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['djobportal.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1:8000, djobportal.herokuapp.com']
 
 
 # Application definition
@@ -58,7 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'user_visit.middleware.UserVisitMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',   
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'job.urls'
@@ -102,7 +103,12 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+#for debug toolbar
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 # CACHES
 # ------------------------------------------------------------------------------
 
