@@ -3,7 +3,7 @@ from django.db import models
 
 from account.managers import CustomUserManager
 
-JOB_TYPE = (
+GENDER_TYPE = (
     ('M', "Male"),
     ('F', "Female"),
 
@@ -21,7 +21,7 @@ class User(AbstractUser):
                                   'unique': "A user with that email already exists.",
                               })
     role = models.CharField(choices=ROLE,  max_length=10)
-    gender = models.CharField(choices=JOB_TYPE, max_length=1)
+    gender = models.CharField(choices=GENDER_TYPE, max_length=1)
 
 
     USERNAME_FIELD = "email"
