@@ -22,12 +22,12 @@ def home_view(request):
     published_jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
     jobs = published_jobs.filter(is_closed=False)
     total_candidates = User.objects.filter(role='employee').count()
-    total_companies = User.objects.filter(role='employer').count()
+    total_companies = User.objects.filter(role='employer').count()    
     paginator = Paginator(jobs, 3)
     page_number = request.GET.get('page',None)
     page_obj = paginator.get_page(page_number)
 
-    if request.is_ajax():
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         job_lists=[]
         job_objects_list = page_obj.object_list.values()
         for job_list in job_objects_list:
