@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  namespace: django-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+        - name: django-app
+          image: codernocap/jon-portal:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_NAME
+              value: jobportal
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: "1234"
+            - name: DB_HOST
+              value: db
+            - name: DB_PORT
+              value: "5432"
