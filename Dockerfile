@@ -1,3 +1,4 @@
+#python image, can also use slim
 FROM python:3.11
 
 ENV PYTHONDONTWRITEBYTECODE 1
