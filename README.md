@@ -1,6 +1,6 @@
 # Job Portal
 Django Job Portal.   
-
+ 
 ## Installation 
 
 ```
