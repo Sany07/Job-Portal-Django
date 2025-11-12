@@ -25,7 +25,7 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000, djobportal.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'djobportal.herokuapp.com']
 
 
 # Application definition
@@ -85,16 +85,16 @@ WSGI_APPLICATION = 'job.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'jobportal',
-#         'USER': 'postgres',
-#         'PASSWORD': '1234',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'jobportal',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'db',
+        'PORT': '5432',
+    }
+}
 
 DATABASES = {
     'default': {
