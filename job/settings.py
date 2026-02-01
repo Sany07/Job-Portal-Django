@@ -193,8 +193,9 @@ MESSAGE_TAGS = {
 }
 
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
+# Activate Django-Heroku only when not using SQLite (prevents Postgres-only teardown SQL during tests)
+if 'sqlite3' not in DATABASES['default']['ENGINE']:
+    django_heroku.settings(locals())
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
