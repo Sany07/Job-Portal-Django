@@ -51,6 +51,27 @@ python manage.py runserver
 
 ![Settings Window](https://raw.github.com/Sany07/Django-Job-Portal/master/screenshots/screencapture-127-0-0-1-8000-dashboard-employer-job-54-applicants-2020-05-08-17_01_34.png)
 
+## Troubleshooting ✅
+
+- **Virtualenv error: "ensurepip is not available"** — On Debian/Ubuntu you may see "The virtual environment was not created successfully because ensurepip is not available." Fix by installing the venv package and recreating the environment:
+
+```bash
+sudo apt update && sudo apt install -y python3-venv python3.12-venv
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+```
+
+- **psycopg2 build error** — If building `psycopg2` fails locally (C-extensions), either install system headers (`libpq-dev`) to build from source or use `psycopg2-binary` for local development. Example:
+
+```bash
+sudo apt install -y libpq-dev build-essential
+# or (for local dev)
+pip install psycopg2-binary
+```
+
+> Note: For production, prefer `psycopg2` built against system libraries instead of `psycopg2-binary`.
+
 <div align="center">
     <h3>========Thank You=========</h3>
 </div>
