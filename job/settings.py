@@ -25,7 +25,7 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000, djobportal.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'djobportal.herokuapp.com']
 
 
 # Application definition
@@ -154,6 +154,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
