@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     #3rd Party App
     'ckeditor',
     'taggit',
-    'user_visit',
+    
     'debug_toolbar',
 ]
 
