@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
 
     #3rd Party App
-    'ckeditor',
+    'django_ckeditor_5',
     'taggit',
     'user_visit',
     'debug_toolbar',
@@ -171,11 +171,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = 'account.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CKeditor Config
-CKEDITOR_CONFIGS = {
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'width': '100%',
-        'tabSpaces': 4,
-
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', ],
+    },
+    'extends': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+                    'bulletedList', 'numberedList', '|',  'blockQuote', 
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'removeFormat',]
     }
 }
 
