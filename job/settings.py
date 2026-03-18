@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +24,8 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000, djobportal.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1']
+
 
 
 # Application definition
@@ -169,7 +169,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = 'account.User'
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CKeditor Config
 CKEDITOR_CONFIGS = {
     'default': {
@@ -191,8 +191,10 @@ MESSAGE_TAGS = {
 }
 
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise compressed static files
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
