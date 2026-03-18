@@ -27,7 +27,7 @@ def home_view(request):
     page_number = request.GET.get('page',None)
     page_obj = paginator.get_page(page_number)
 
-    if request.is_ajax():
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         job_lists=[]
         job_objects_list = page_obj.object_list.values()
         for job_list in job_objects_list:

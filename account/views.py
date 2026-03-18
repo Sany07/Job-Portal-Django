@@ -31,6 +31,7 @@ def employee_registration(request):
     form = EmployeeRegistrationForm(request.POST or None)
     if form.is_valid():
         form = form.save()
+        messages.success(request, 'Your account was successfully created! Please log in.')
         return redirect('account:login')
     context={
         
@@ -50,6 +51,7 @@ def employer_registration(request):
     form = EmployerRegistrationForm(request.POST or None)
     if form.is_valid():
         form = form.save()
+        messages.success(request, 'Your Employer account was successfully created! Please log in.')
         return redirect('account:login')
     context={
         
