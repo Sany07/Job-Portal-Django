@@ -11,9 +11,11 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
 from account.models import User
-from jobapp.forms import *
-from jobapp.models import *
-from jobapp.permission import *
+from jobapp.forms import JobForm, JobApplyForm, JobBookmarkForm, JobEditForm
+from jobapp.models import Job, Category, Applicant, BookmarkJob
+from jobapp.permission import user_is_employer, user_is_employee
+from jobapp.selectors import get_listed_jobs, search_jobs
+from jobapp.services import toggle_job_status, delete_user_job, remove_bookmark
 User = get_user_model()
 
 
@@ -61,12 +63,12 @@ def home_view(request):
     }
     return render(request, 'jobapp/index.html', context)
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def job_list_View(request):
     """
-
+    Handle Job List View
     """
-    job_list = Job.objects.filter(is_published=True,is_closed=False).order_by('-timestamp')
+    job_list = get_listed_jobs()
     paginator = Paginator(job_list, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -141,42 +143,11 @@ def search_result_view(request):
         User can search job with multiple fields
 
     """
-
-    job_list = Job.objects.order_by('-timestamp')
-
-    # Keywords
-    if 'job_title_or_company_name' in request.GET:
-        job_title_or_company_name = request.GET['job_title_or_company_name']
-
-        if job_title_or_company_name:
-            job_list = job_list.filter(title__icontains=job_title_or_company_name) | job_list.filter(
-                company_name__icontains=job_title_or_company_name)
-
-    # location
-    if 'location' in request.GET:
-        location = request.GET['location']
-        if location:
-            job_list = job_list.filter(location__icontains=location)
-
-    # Job Type
-    if 'job_type' in request.GET:
-        job_type = request.GET['job_type']
-        if job_type:
-            job_list = job_list.filter(job_type__iexact=job_type)
-
-    # job_title_or_company_name = request.GET.get('text')
-    # location = request.GET.get('location')
-    # job_type = request.GET.get('type')
-
-    #     job_list = Job.objects.all()
-    #     job_list = job_list.filter(
-    #         Q(job_type__iexact=job_type) |
-    #         Q(title__icontains=job_title_or_company_name) |
-    #         Q(location__icontains=location)
-    #     ).distinct()
-
-    # job_list = Job.objects.filter(job_type__iexact=job_type) | Job.objects.filter(
-    #     location__icontains=location) | Job.objects.filter(title__icontains=text) | Job.objects.filter(company_name__icontains=text)
+    job_list = search_jobs(
+        title_or_company=request.GET.get('job_title_or_company_name'),
+        location=request.GET.get('location'),
+        job_type=request.GET.get('job_type')
+    )
 
     paginator = Paginator(job_list, 10)
     page_number = request.GET.get('page')
@@ -258,29 +229,19 @@ def dashboard_view(request):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def delete_job_view(request, id):
-
-    job = get_object_or_404(Job, id=id, user=request.user.id)
-
-    if job:
-
-        job.delete()
+    if delete_user_job(request.user.id, id):
         messages.success(request, 'Your Job Post was successfully deleted!')
-
     return redirect('jobapp:dashboard')
 
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
 def make_complete_job_view(request, id):
-    job = get_object_or_404(Job, id=id, user=request.user.id)
-
-    if job:
-        try:
-            job.is_closed = True
-            job.save()
-            messages.success(request, 'Your Job was marked closed!')
-        except:
-            messages.success(request, 'Something went wrong !')
+    try:
+        toggle_job_status(request.user.id, id)
+        messages.success(request, 'Your Job was marked closed!')
+    except:
+        messages.success(request, 'Something went wrong !')
             
     return redirect('jobapp:dashboard')
 
@@ -303,14 +264,8 @@ def all_applicants_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
 def delete_bookmark_view(request, id):
-
-    job = get_object_or_404(BookmarkJob, id=id, user=request.user.id)
-
-    if job:
-
-        job.delete()
+    if remove_bookmark(request.user.id, id):
         messages.success(request, 'Saved Job was successfully deleted!')
-
     return redirect('jobapp:dashboard')
 
 
