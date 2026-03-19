@@ -59,7 +59,6 @@ def home_view(request):
     'total_completed_jobs':len(published_jobs.filter(is_closed=True)),
     'page_obj': page_obj
     }
-    print('ok')
     return render(request, 'jobapp/index.html', context)
 
 @cache_page(60 * 15)
@@ -367,7 +366,7 @@ def job_bookmark_view(request, id):
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
-def job_edit_view(request, id=id):
+def job_edit_view(request, id):
     """
     Handle Job Update
 

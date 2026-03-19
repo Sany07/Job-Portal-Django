@@ -61,9 +61,9 @@ def employer_registration(request):
     return render(request,'account/employer-registration.html',context)
 
 
-@login_required(login_url=reverse_lazy('accounts:login'))
+@login_required(login_url=reverse_lazy('account:login'))
 @user_is_employee
-def employee_edit_profile(request, id=id):
+def employee_edit_profile(request, id):
 
     """
     Handle Employee Profile Update Functionality
