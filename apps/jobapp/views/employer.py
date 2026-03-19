@@ -14,7 +14,7 @@ User = get_user_model()
 
 @login_required(login_url=reverse_lazy('account:login'))
 @user_is_employer
-def create_job_View(request):
+def create_job_view(request):
     """
     Provide the ability to create job post
     """

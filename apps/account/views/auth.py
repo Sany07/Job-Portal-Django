@@ -42,7 +42,7 @@ def employer_registration(request):
     return render(request, 'account/employer-registration.html', context)
 
 
-def user_logIn(request):
+def user_login_view(request):
     """
     Provides users to logIn
     """
@@ -58,7 +58,7 @@ def user_logIn(request):
     return render(request, 'account/login.html', context)
 
 
-def user_logOut(request):
+def user_logout_view(request):
     """
     Provide the ability to logout
     """

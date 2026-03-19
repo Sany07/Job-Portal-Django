@@ -47,7 +47,7 @@ def home_view(request):
     return render(request, 'jobapp/index.html', context)
 
 
-def job_list_View(request):
+def job_list_view(request):
     """
     Handle Job List View
     """
