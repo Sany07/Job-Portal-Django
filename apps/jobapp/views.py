@@ -143,6 +143,42 @@ def search_result_view(request):
         User can search job with multiple fields
 
     """
+    
+    # job_list = Job.objects.order_by('-timestamp')
+
+    # # Keywords
+    # if 'job_title_or_company_name' in request.GET:
+    #     job_title_or_company_name = request.GET['job_title_or_company_name']
+
+    #     if job_title_or_company_name:
+    #         job_list = job_list.filter(title__icontains=job_title_or_company_name) | job_list.filter(
+    #             company_name__icontains=job_title_or_company_name)
+
+    # # location
+    # if 'location' in request.GET:
+    #     location = request.GET['location']
+    #     if location:
+    #         job_list = job_list.filter(location__icontains=location)
+
+    # # Job Type
+    # if 'job_type' in request.GET:
+    #     job_type = request.GET['job_type']
+    #     if job_type:
+    #         job_list = job_list.filter(job_type__iexact=job_type)
+
+    # # job_title_or_company_name = request.GET.get('text')
+    # # location = request.GET.get('location')
+    # # job_type = request.GET.get('type')
+
+    # #     job_list = Job.objects.all()
+    # #     job_list = job_list.filter(
+    # #         Q(job_type__iexact=job_type) |
+    # #         Q(title__icontains=job_title_or_company_name) |
+    # #         Q(location__icontains=location)
+    # #     ).distinct()
+
+    # # job_list = Job.objects.filter(job_type__iexact=job_type) | Job.objects.filter(
+    # #     location__icontains=location) | Job.objects.filter(title__icontains=text) | Job.objects.filter(company_name__icontains=text)
     job_list = search_jobs(
         title_or_company=request.GET.get('job_title_or_company_name'),
         location=request.GET.get('location'),
@@ -200,6 +236,7 @@ def apply_job_view(request, id):
 @login_required(login_url=reverse_lazy('account:login'))
 def dashboard_view(request):
     """
+    
     """
     jobs = []
     savedjobs = []
