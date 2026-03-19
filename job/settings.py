@@ -18,13 +18,30 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "t", "yes", "y", "on"}
+
+
+def _env_csv(name: str, default: list[str] | None = None) -> list[str]:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default or []
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "dev-insecure-secret-key-change-me",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = _env_bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = _env_csv("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
 
 
