@@ -209,7 +209,7 @@
               {% endif %}
             </li>
             <li class="mb-2"><strong class="text-black">Job Location:</strong> {{ job.location }}</li>
-            <li class="mb-2"><strong class="text-black">Salary:</strong> {% if job.salary_min and job.salary_max %}{{ job.salary_currency }} {{ job.salary_min }} - {{ job.salary_max }}{% else %}Not specified{% endif %}</li>
+            <li class="mb-2"><strong class="text-black">Salary:</strong> {{ job.salary }}</li>
             <li class="mb-2"><strong class="text-black">Work Mode:</strong> {{ job.get_work_mode_display }}</li>
             <li class="mb-2"><strong class="text-black">Experience:</strong> {{ job.get_experience_level_display }}</li>
             <li class="mb-2"><strong class="text-black">Views:</strong> 👀 {{ job.views_count }}</li>
