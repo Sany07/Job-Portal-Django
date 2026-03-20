@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from core.models import SoftDeleteModel, TimeStampedModel
+
 from django_ckeditor_5.fields import CKEditor5Field
 from taggit.managers import TaggableManager
 
@@ -33,7 +35,7 @@ class Category(models.Model):
         return self.name
 
 
-class Job(models.Model):
+class Job(TimeStampedModel, SoftDeleteModel):
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
     description = CKEditor5Field(config_name='extends')
@@ -51,7 +53,6 @@ class Job(models.Model):
     last_date = models.DateField()
     is_published = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title

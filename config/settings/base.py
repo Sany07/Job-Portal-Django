@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'core.apps.CoreConfig',
     'jobapp.apps.JobappConfig',
     'account.apps.AccountConfig',
 

@@ -6,7 +6,7 @@ from django.views.generic import DeleteView, View
 from jobapp.forms import JobApplyForm, JobBookmarkForm
 from jobapp.models import Applicant, BookmarkJob, Job
 from jobapp.permission import EmployeeRequiredMixin
-from jobapp.services import remove_bookmark
+
 
 
 class ApplyJobView(EmployeeRequiredMixin, View):
