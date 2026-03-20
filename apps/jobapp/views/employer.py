@@ -1,94 +1,109 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+    View,
+)
 
 from jobapp.forms import JobEditForm, JobForm
 from jobapp.models import Applicant, Category, Job
-from jobapp.permission import user_is_employer
-from jobapp.services import delete_user_job, toggle_job_status
+from jobapp.permission import EmployerRequiredMixin
+from jobapp.services import toggle_job_status
 
 User = get_user_model()
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def create_job_view(request):
-    """
-    Provide the ability to create job post
-    """
-    form = JobForm(request.POST or None)
-    user = get_object_or_404(User, id=request.user.id)
-    categories = Category.objects.all()
+class CreateJobView(EmployerRequiredMixin, CreateView):
+    """Employer creates a new job post."""
+    model = Job
+    form_class = JobForm
+    template_name = 'jobapp/post-job.html'
 
-    if request.method == 'POST' and form.is_valid():
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+    def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = user
+        instance.user = self.request.user
         instance.save()
         form.save_m2m()
-        messages.success(request, 'You are successfully posted your job! Please wait for review.')
-        return redirect(reverse("jobapp:single-job", kwargs={'id': instance.id}))
-
-    context = {
-        'form': form,
-        'categories': categories,
-    }
-    return render(request, 'jobapp/post-job.html', context)
+        messages.success(self.request, 'You are successfully posted your job! Please wait for review.')
+        return redirect(reverse_lazy('jobapp:single-job', kwargs={'id': instance.id}))
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def delete_job_view(request, id):
-    if delete_user_job(request.user.id, id):
-        messages.success(request, 'Your Job Post was successfully deleted!')
-    return redirect('jobapp:dashboard')
+class JobEditView(EmployerRequiredMixin, UpdateView):
+    """Employer edits an existing job post."""
+    model = Job
+    form_class = JobEditForm
+    template_name = 'jobapp/job-edit.html'
+    pk_url_kwarg = 'id'
+
+    def get_queryset(self):
+        return Job.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+    def form_valid(self, form):
+        instance = form.save()
+        messages.success(self.request, 'Your Job Post Was Successfully Updated!')
+        return redirect(reverse_lazy('jobapp:single-job', kwargs={'id': instance.id}))
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def make_complete_job_view(request, id):
-    try:
-        toggle_job_status(request.user.id, id)
-        messages.success(request, 'Your Job was marked closed!')
-    except Exception:
-        messages.success(request, 'Something went wrong !')
-    return redirect('jobapp:dashboard')
+class DeleteJobView(EmployerRequiredMixin, DeleteView):
+    """Employer deletes a job post."""
+    model = Job
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('jobapp:dashboard')
+
+    def get_queryset(self):
+        return Job.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your Job Post was successfully deleted!')
+        return super().form_valid(form)
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def all_applicants_view(request, id):
-    all_applicants = Applicant.objects.filter(job=id)
-    context = {'all_applicants': all_applicants}
-    return render(request, 'jobapp/all-applicants.html', context)
+class MakeCompleteJobView(EmployerRequiredMixin, View):
+    """Employer marks a job as closed. (Custom action — kept as View subclass)"""
+    def post(self, request, id):
+        try:
+            toggle_job_status(request.user.id, id)
+            messages.success(request, 'Your Job was marked closed!')
+        except Exception:
+            messages.error(request, 'Something went wrong!')
+        return redirect('jobapp:dashboard')
+
+    # Allow GET as well for compatibility with existing links
+    def get(self, request, id):
+        return self.post(request, id)
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def applicant_details_view(request, id):
-    applicant = get_object_or_404(User, id=id)
-    context = {'applicant': applicant}
-    return render(request, 'jobapp/applicant-details.html', context)
+class AllApplicantsView(EmployerRequiredMixin, ListView):
+    """Employer views all applicants for a specific job."""
+    template_name = 'jobapp/all-applicants.html'
+    context_object_name = 'all_applicants'
+
+    def get_queryset(self):
+        return Applicant.objects.filter(job_id=self.kwargs['id']).select_related('user', 'job')
 
 
-@login_required(login_url=reverse_lazy('account:login'))
-@user_is_employer
-def job_edit_view(request, id):
-    """
-    Handle Job Update
-    """
-    job = get_object_or_404(Job, id=id, user=request.user.id)
-    categories = Category.objects.all()
-    form = JobEditForm(request.POST or None, instance=job)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        messages.success(request, 'Your Job Post Was Successfully Updated!')
-        return redirect(reverse("jobapp:single-job", kwargs={'id': instance.id}))
-    context = {
-        'form': form,
-        'categories': categories,
-    }
-    return render(request, 'jobapp/job-edit.html', context)
+class ApplicantDetailsView(EmployerRequiredMixin, DetailView):
+    """Employer views details of a specific applicant."""
+    model = User
+    template_name = 'jobapp/applicant-details.html'
+    context_object_name = 'applicant'
+    pk_url_kwarg = 'id'
+
+
 

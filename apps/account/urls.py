@@ -1,19 +1,18 @@
 from django.urls import path
 from account.views import (
-    employee_edit_profile,
-    employee_registration,
-    employer_registration,
-    user_login_view,
-    user_logout_view,
+    EmployeeEditProfileView,
+    EmployeeRegistrationView,
+    EmployerRegistrationView,
+    UserLoginView,
+    UserLogoutView,
 )
 
 app_name = "account"
 
 urlpatterns = [
-
-    path('employee/register/', employee_registration, name='employee-registration'),
-    path('employer/register/', employer_registration, name='employer-registration'),
-    path('profile/edit/<int:id>/', employee_edit_profile, name='edit-profile'),
-    path('login/', user_login_view, name='login'),
-    path('logout/', user_logout_view, name='logout'),
+    path('employee/register/', EmployeeRegistrationView.as_view(), name='employee-registration'),
+    path('employer/register/', EmployerRegistrationView.as_view(), name='employer-registration'),
+    path('profile/edit/<int:id>/', EmployeeEditProfileView.as_view(), name='edit-profile'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
 ]

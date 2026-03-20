@@ -1,68 +1,59 @@
-from django.contrib import auth
-from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.contrib import auth, messages
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView
 
 from account.forms import EmployerRegistrationForm, EmployeeRegistrationForm, UserLoginForm
 
 
-def get_success_url(request):
+class UserLoginView(LoginView):
     """
-    Handle Success Url After LogIN
+    Email-based login using Django's built-in LoginView.
+    Redirects to dashboard after login.
     """
-    if 'next' in request.GET and request.GET['next'] != '':
-        return request.GET['next']
-    return reverse('jobapp:dashboard')
+    form_class = UserLoginForm
+    template_name = 'account/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next') or self.request.POST.get('next')
+        if next_url:
+            return next_url
+        return reverse('jobapp:dashboard')
 
 
-def employee_registration(request):
-    """
-    Handle Employee Registration
-    """
-    form = EmployeeRegistrationForm(request.POST or None)
-    if form.is_valid():
+class UserLogoutView(LogoutView):
+    """Logs out the user and redirects to login page."""
+    next_page = reverse_lazy('account:login')
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, 'You are successfully logged out.')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class EmployeeRegistrationView(CreateView):
+    """Handles employee (job seeker) registration."""
+    form_class = EmployeeRegistrationForm
+    template_name = 'account/employee-registration.html'
+    success_url = reverse_lazy('account:login')
+
+    def form_valid(self, form):
         form.save()
-        messages.success(request, 'Your account was successfully created! Please log in.')
-        return redirect('account:login')
-    context = {'form': form}
-    return render(request, 'account/employee-registration.html', context)
+        messages.success(self.request, 'Your account was successfully created! Please log in.')
+        return redirect(self.success_url)
 
 
-def employer_registration(request):
-    """
-    Handle Employee Registration
-    """
-    form = EmployerRegistrationForm(request.POST or None)
-    if form.is_valid():
+class EmployerRegistrationView(CreateView):
+    """Handles employer (company) registration."""
+    form_class = EmployerRegistrationForm
+    template_name = 'account/employer-registration.html'
+    success_url = reverse_lazy('account:login')
+
+    def form_valid(self, form):
         form.save()
-        messages.success(request, 'Your Employer account was successfully created! Please log in.')
-        return redirect('account:login')
-    context = {'form': form}
-    return render(request, 'account/employer-registration.html', context)
+        messages.success(self.request, 'Your Employer account was successfully created! Please log in.')
+        return redirect(self.success_url)
 
 
-def user_login_view(request):
-    """
-    Provides users to logIn
-    """
-    form = UserLoginForm(request.POST or None)
-    if request.user.is_authenticated:
-        return redirect('/')
-
-    if request.method == 'POST' and form.is_valid():
-        auth.login(request, form.get_user())
-        return HttpResponseRedirect(get_success_url(request))
-
-    context = {'form': form}
-    return render(request, 'account/login.html', context)
-
-
-def user_logout_view(request):
-    """
-    Provide the ability to logout
-    """
-    auth.logout(request)
-    messages.success(request, 'You are Successfully logged out')
-    return redirect('account:login')
 

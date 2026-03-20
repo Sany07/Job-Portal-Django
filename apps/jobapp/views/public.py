@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import DetailView, ListView
 
 from jobapp.models import Job
 from jobapp.selectors import get_listed_jobs, search_jobs
@@ -11,6 +12,9 @@ User = get_user_model()
 
 
 def home_view(request):
+    """
+    Home page — kept as FBV due to AJAX + stats logic.
+    """
     published_jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
     jobs = published_jobs.filter(is_closed=False)
     total_candidates = User.objects.filter(role='employee').count()
@@ -21,19 +25,14 @@ def home_view(request):
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         job_lists = []
-        job_objects_list = page_obj.object_list.values()
-        for job_list in job_objects_list:
+        for job_list in page_obj.object_list.values():
             job_lists.append(job_list)
-
-        next_page_number = page_obj.next_page_number() if page_obj.has_next() else None
-        prev_page_number = page_obj.previous_page_number() if page_obj.has_previous() else None
-
         data = {
             'job_lists': job_lists,
             'current_page_no': page_obj.number,
-            'next_page_number': next_page_number,
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
             'no_of_page': paginator.num_pages,
-            'prev_page_number': prev_page_number,
+            'prev_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
         }
         return JsonResponse(data)
 
@@ -47,54 +46,52 @@ def home_view(request):
     return render(request, 'jobapp/index.html', context)
 
 
-def job_list_view(request):
-    """
-    Handle Job List View
-    """
-    job_list = get_listed_jobs()
-    paginator = Paginator(job_list, 12)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
-    return render(request, 'jobapp/job-list.html', context)
+class JobListView(ListView):
+    """All published open jobs."""
+    template_name = 'jobapp/job-list.html'
+    context_object_name = 'page_obj'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return get_listed_jobs()
 
 
-def single_job_view(request, id):
-    """
-    Provide the ability to view job details
-    """
-    if cache.get(id):
-        job = cache.get(id)
-    else:
-        job = get_object_or_404(Job, id=id)
-        cache.set(id, job, 60 * 15)
-    related_job_list = job.tags.similar_objects()
+class SingleJobView(DetailView):
+    """Single job detail page with related jobs and caching."""
+    template_name = 'jobapp/job-single.html'
+    context_object_name = 'job'
+    pk_url_kwarg = 'id'
 
-    paginator = Paginator(related_job_list, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    def get_object(self, queryset=None):
+        job_id = self.kwargs['id']
+        job = cache.get(job_id)
+        if not job:
+            job = get_object_or_404(Job, id=job_id)
+            cache.set(job_id, job, 60 * 15)
+        return job
 
-    context = {
-        'job': job,
-        'page_obj': page_obj,
-        'total': len(related_job_list),
-    }
-    return render(request, 'jobapp/job-single.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        related_job_list = self.object.tags.similar_objects()
+        paginator = Paginator(related_job_list, 5)
+        page_number = self.request.GET.get('page')
+        context['page_obj'] = paginator.get_page(page_number)
+        context['total'] = len(related_job_list)
+        return context
 
 
-def search_result_view(request):
-    """
-    User can search job with multiple fields
-    """
-    job_list = search_jobs(
-        title_or_company=request.GET.get('job_title_or_company_name'),
-        location=request.GET.get('location'),
-        job_type=request.GET.get('job_type'),
-    )
+class SearchResultView(ListView):
+    """Job search results with multiple filter fields."""
+    template_name = 'jobapp/result.html'
+    context_object_name = 'page_obj'
+    paginate_by = 10
 
-    paginator = Paginator(job_list, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
-    return render(request, 'jobapp/result.html', context)
+    def get_queryset(self):
+        return search_jobs(
+            title_or_company=self.request.GET.get('job_title_or_company_name'),
+            location=self.request.GET.get('location'),
+            job_type=self.request.GET.get('job_type'),
+        )
+
+
 
