@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView, ListView
-
+from django.db.models import F
 from jobapp.models import Job
 from jobapp.selectors import get_listed_jobs, search_jobs
 
@@ -64,10 +64,18 @@ class SingleJobView(DetailView):
 
     def get_object(self, queryset=None):
         job_id = self.kwargs['id']
+        
+        # Increment views_count safely in DB
+        Job.objects.filter(id=job_id).update(views_count=F('views_count') + 1)
+        
         job = cache.get(job_id)
         if not job:
             job = get_object_or_404(Job, id=job_id)
             cache.set(job_id, job, 60 * 15)
+        else:
+            job.views_count += 1
+            cache.set(job_id, job, 60 * 15)
+            
         return job
 
     def get_context_data(self, **kwargs):

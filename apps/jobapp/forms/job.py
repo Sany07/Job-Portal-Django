@@ -8,7 +8,11 @@ class JobForm(forms.ModelForm):
         forms.ModelForm.__init__(self, *args, **kwargs)
         self.fields['title'].label = "Job Title :"
         self.fields['location'].label = "Job Location :"
-        self.fields['salary'].label = "Salary :"
+        self.fields['salary_min'].label = "Minimum Salary :"
+        self.fields['salary_max'].label = "Maximum Salary :"
+        self.fields['salary_currency'].label = "Currency :"
+        self.fields['work_mode'].label = "Work Mode :"
+        self.fields['experience_level'].label = "Experience Level :"
         self.fields['description'].label = "Job Description :"
         self.fields['tags'].label = "Tags :"
         self.fields['last_date'].label = "Submission Deadline :"
@@ -17,7 +21,8 @@ class JobForm(forms.ModelForm):
 
         self.fields['title'].widget.attrs.update({'placeholder': 'eg : Software Developer'})
         self.fields['location'].widget.attrs.update({'placeholder': 'eg : Bangladesh'})
-        self.fields['salary'].widget.attrs.update({'placeholder': '$800 - $1200'})
+        self.fields['salary_min'].widget.attrs.update({'placeholder': 'e.g. 500'})
+        self.fields['salary_max'].widget.attrs.update({'placeholder': 'e.g. 1500'})
         self.fields['tags'].widget.attrs.update(
             {'placeholder': 'Use comma separated. eg: Python, JavaScript '}
         )
@@ -31,8 +36,12 @@ class JobForm(forms.ModelForm):
             "title",
             "location",
             "job_type",
+            "work_mode",
+            "experience_level",
             "category",
-            "salary",
+            "salary_min",
+            "salary_max",
+            "salary_currency",
             "description",
             "tags",
             "last_date",
@@ -65,7 +74,11 @@ class JobEditForm(forms.ModelForm):
         forms.ModelForm.__init__(self, *args, **kwargs)
         self.fields['title'].label = "Job Title :"
         self.fields['location'].label = "Job Location :"
-        self.fields['salary'].label = "Salary :"
+        self.fields['salary_min'].label = "Minimum Salary :"
+        self.fields['salary_max'].label = "Maximum Salary :"
+        self.fields['salary_currency'].label = "Currency :"
+        self.fields['work_mode'].label = "Work Mode :"
+        self.fields['experience_level'].label = "Experience Level :"
         self.fields['description'].label = "Job Description :"
         self.fields['last_date'].label = "Dead Line :"
         self.fields['company_name'].label = "Company Name :"
@@ -73,7 +86,8 @@ class JobEditForm(forms.ModelForm):
 
         self.fields['title'].widget.attrs.update({'placeholder': 'eg : Software Developer'})
         self.fields['location'].widget.attrs.update({'placeholder': 'eg : Bangladesh'})
-        self.fields['salary'].widget.attrs.update({'placeholder': '$800 - $1200'})
+        self.fields['salary_min'].widget.attrs.update({'placeholder': 'e.g. 500'})
+        self.fields['salary_max'].widget.attrs.update({'placeholder': 'e.g. 1500'})
         self.fields['last_date'].widget.attrs.update({'placeholder': 'YYYY-MM-DD '})
         self.fields['company_name'].widget.attrs.update({'placeholder': 'Company Name'})
         self.fields['url'].widget.attrs.update({'placeholder': 'https://example.com'})
@@ -93,8 +107,12 @@ class JobEditForm(forms.ModelForm):
             "title",
             "location",
             "job_type",
+            "work_mode",
+            "experience_level",
             "category",
-            "salary",
+            "salary_min",
+            "salary_max",
+            "salary_currency",
             "description",
             "last_date",
             "company_name",

@@ -12,6 +12,19 @@ JOB_TYPE = (
     ('3', "Internship"),
 )
 
+WORK_MODE = (
+    ('remote', 'Remote'),
+    ('hybrid', 'Hybrid'),
+    ('onsite', 'On-site'),
+)
+
+EXPERIENCE_LEVEL = (
+    ('entry', 'Entry Level'),
+    ('mid', 'Mid Level'),
+    ('senior', 'Senior Level'),
+    ('lead', 'Lead / Manager'),
+)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -27,8 +40,13 @@ class Job(models.Model):
     tags = TaggableManager()
     location = models.CharField(max_length=300)
     job_type = models.CharField(choices=JOB_TYPE, max_length=1)
+    work_mode = models.CharField(choices=WORK_MODE, max_length=10, default='onsite')
+    experience_level = models.CharField(choices=EXPERIENCE_LEVEL, max_length=10, default='entry')
     category = models.ForeignKey(Category, related_name='Category', on_delete=models.CASCADE)
-    salary = models.CharField(max_length=30, blank=True)
+    salary_min = models.PositiveIntegerField(blank=True, null=True)
+    salary_max = models.PositiveIntegerField(blank=True, null=True)
+    salary_currency = models.CharField(max_length=10, default='USD', blank=True)
+    views_count = models.PositiveIntegerField(default=0)
     company_name = models.CharField(max_length=300)
     company_description = CKEditor5Field(config_name='extends', blank=True, null=True)
     url = models.URLField(max_length=200)

@@ -75,6 +75,10 @@ class UserLoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
     )
 
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+
     def clean(self, *args, **kwargs):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")

@@ -2,7 +2,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, View
 
 from account.forms import EmployerRegistrationForm, EmployeeRegistrationForm, UserLoginForm
 
@@ -23,13 +23,16 @@ class UserLoginView(LoginView):
         return reverse('jobapp:dashboard')
 
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(View):
     """Logs out the user and redirects to login page."""
-    next_page = reverse_lazy('account:login')
 
-    def dispatch(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        auth.logout(request)
         messages.success(request, 'You are successfully logged out.')
-        return super().dispatch(request, *args, **kwargs)
+        return redirect(reverse_lazy('account:login'))
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
 
 
 class EmployeeRegistrationView(CreateView):
