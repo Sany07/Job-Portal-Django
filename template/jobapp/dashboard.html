@@ -44,7 +44,7 @@
                             {% for job in jobs %}
                             <tr id="row_{{ job.id }}">
                                 <td class="text-left"><a href="{% url 'jobapp:single-job' job.id %}">{{ job.title }}</a></td>
-                                <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                <td>{{ job.created_at | date:'M d, Y'  }}</td>
                                 <td>{{ job.last_date | date:'M d, Y' }}</td>
                                 <td>
                                     {% if job.is_published == True %}
@@ -136,7 +136,7 @@
                                     {% for job in savedjobs %}
                                     <tr id="row_{{ job.id }}">
                                         <td><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></td>
-                                        <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                        <td>{{ job.created_at | date:'M d, Y'  }}</td>
                                         <td>{{ job.job.last_date | date:'M d, Y' }}</td>
                                         <td>
                                             <button onclick="call_sw_alert_func('{% url 'jobapp:delete-bookmark' job.id %}','{{ job.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')" class="btn btn-danger btn-sm">Delete</button>
@@ -156,7 +156,8 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Job Title</th>
-                                        <th>Posted Date</th>
+                                        <th>Date Applied</th>
+                                        <th>Status</th>
                                         <th>Date expiring</th>
                                     </tr>
                                 </thead>
@@ -164,7 +165,16 @@
                                     {% for job in appliedjobs %}
                                     <tr id="row_{{ job.id }}">
                                         <td><a href="{% url 'jobapp:single-job' job.job.id %}">{{ job.job.title }}</a></td>
-                                        <td>{{ job.timestamp | date:'M d, Y'  }}</td>
+                                        <td>{{ job.created_at | date:'M d, Y'  }}</td>
+                                        <td>
+                                            {% if job.status == 'pending' %}
+                                                <span class="badge badge-warning">Pending</span>
+                                            {% elif job.status == 'accepted' %}
+                                                <span class="badge badge-success">Accepted</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">Rejected</span>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ job.job.last_date | date:'M d, Y' }}</td>
                                     </tr>
                                     {% endfor %}

@@ -29,6 +29,8 @@
                                     <th>Name</th>
                                     <th>Job Title</th>
                                     <th>Applied Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                     <th>View </th>
                         
                                 </tr>
@@ -40,11 +42,38 @@
                                 <tr>
                                     <td class="text-center"><a href="">{{ applicant.user.get_full_name }}</a></td     >
                                     <td>{{ applicant.job.title }}</td>
-                                    <td>{{ applicant.timestamp }}</td>
+                                    <td>{{ applicant.created_at | date:'M d, Y' }}</td>
+                                    <td>
+                                        {% if applicant.status == 'pending' %}
+                                            <span class="badge badge-warning">Pending</span>
+                                        {% elif applicant.status == 'accepted' %}
+                                            <span class="badge badge-success">Accepted</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if applicant.status == 'pending' %}
+                                        <div class="d-flex justify-content-center">
+                                            <form action="{% url 'jobapp:update-applicant-status' applicant.id %}" method="POST" class="mr-1">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="status" value="accepted">
+                                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                            </form>
+                                            <form action="{% url 'jobapp:update-applicant-status' applicant.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="status" value="rejected">
+                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                            </form>
+                                        </div>
+                                        {% else %}
+                                            <span class="text-muted">No Action</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="{% url 'jobapp:applicant-details' applicant.user.id %}"
                                                 role="button">
-                                            Click
+                                            Details
                                         </a>
                                     </td>
 

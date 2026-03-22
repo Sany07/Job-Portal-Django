@@ -198,7 +198,7 @@
         <div class="bg-light p-3 border rounded mb-4">
           <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Job Summary</h3>
           <ul class="list-unstyled pl-3 mb-0">
-            <li class="mb-2"><strong class="text-black">Published on:</strong> {{ job.timestamp|date:"d M Y" }}</li>
+            <li class="mb-2"><strong class="text-black">Published on:</strong> {{ job.created_at|date:"d M Y" }}</li>
             <li class="mb-2"><strong class="text-black">Employment Status:</strong>
               {% if job.job_type == '1' %}
               Full Time
@@ -210,6 +210,9 @@
             </li>
             <li class="mb-2"><strong class="text-black">Job Location:</strong> {{ job.location }}</li>
             <li class="mb-2"><strong class="text-black">Salary:</strong> {{ job.salary }}</li>
+            <li class="mb-2"><strong class="text-black">Work Mode:</strong> {{ job.get_work_mode_display }}</li>
+            <li class="mb-2"><strong class="text-black">Experience:</strong> {{ job.get_experience_level_display }}</li>
+            <li class="mb-2"><strong class="text-black">Views:</strong> 👀 {{ job.views_count }}</li>
             <li class="mb-2"><strong class="text-black">Application Deadline:</strong> {{ job.last_date|date:"d M Y" }}
             </li>
           </ul>
