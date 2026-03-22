@@ -3,15 +3,7 @@ from django.db import models
 
 from account.managers import CustomUserManager
 
-GENDER_TYPE = (
-    ('M', "Male"),
-    ('F', "Female"),
-)
-
-ROLE = (
-    ('employer', "Employer"),
-    ('employee', "Employee"),
-)
+from account.constants import GENDER_TYPE, ROLE
 
 
 class User(AbstractUser):

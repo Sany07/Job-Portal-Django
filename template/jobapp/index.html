@@ -87,8 +87,7 @@
       <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
         <a href="{% url 'jobapp:single-job' job.id %}"></a>
         <div class="job-listing-logo">
-          <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co"
-            class="img-fluid">
+          <img src="{% static 'images/i.jpg' %}" alt="Free Website Template by Free-Template.co" class="img-fluid">
         </div>
 
         <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -108,7 +107,7 @@
             <span class="badge badge-danger">
               Part Time
             </span>
-            {% else  %}
+            {% else %}
             <span class="badge badge-info">
               Internship
             </span>
@@ -124,7 +123,8 @@
   {% endif %}
 </section>
 
-<section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('{% static 'images/hero_1.jpg' %}');">
+<section class="py-5 bg-image overlay-primary fixed overlay"
+  style="background-image: url('{% static 'images/hero_1.jpg' %}');">
   <div class="container">
     {% if request.user.role == "employer" %}
     <div class="row align-items-center">
@@ -206,26 +206,26 @@
 {% block extra_scripts %}
 <script>
 
-$("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function( event ) {
-		event.preventDefault();
+  $("#ajax_listing_paginattion").delegate("a#ajax_paginator", "click", function (event) {
+    event.preventDefault();
     joblist = ``
     next_paging = ``
     prev_paging = ``
     page_navigator = ``
-		var page_ref = $(this).attr('href');
+    var page_ref = $(this).attr('href');
     var page_number = page_ref.slice(6);
     console.log('page_number', page_number);
-		$.ajax({
-					type: "GET",
-					url: "{% url 'jobapp:home' %}", 
-					data : {    
-          page : page_number, 
-				},
-        success: function (response) {
-          $('#job').html('')
-                    response.job_lists.map(function (job) {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'jobapp:home' %}",
+      data: {
+        page: page_number,
+      },
+      success: function (response) {
+        $('#job').html('')
+        response.job_lists.map(function (job) {
 
-                        joblist+=`
+          joblist += `
                           <li id="next" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                             <a href="/job/${job.id}/"></a>
                               <div class="job-listing-logo">
@@ -235,68 +235,66 @@ $("#ajax_listing_paginattion" ).delegate( "a#ajax_paginator", "click", function(
 
                               <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
                                 <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                  <h2>${ job.title }</h2>
-                                  <strong>${ job.company_name }</strong>
+                                  <h2>${job.title}</h2>
+                                  <strong>${job.company_name}</strong>
                                 </div>
                                 <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                  <span class="icon-room"></span>${ job.location } 
+                                  <span class="icon-room"></span>${job.location} 
                                 </div>
                                 
                                 <div class="job-listing-meta">
-                                  ${ job.job_type == '1'
-                                  ?  
-                                  `<span class="badge badge-success">
+                                  ${job.job_type == '1'
+              ?
+              `<span class="badge badge-success">
                                     Full Time
                                   </span>`
-                                  : 
-                                  job.job_type == '2' 
-                                  ?  
-                                  `<span class="badge badge-danger">
+              :
+              job.job_type == '2'
+                ?
+                `<span class="badge badge-danger">
                                     Part Time
-                                  </span>` 
-                                  :
-                                  `<span class="badge badge-info">
+                                  </span>`
+                :
+                `<span class="badge badge-info">
                                     Internship
                                   </span>
                                   `
-                                  }
+            }
                                 </div>
                               </div>
                             </li>
-                        ` 
-                      })
+                        `
+        })
 
-                        $('#job').html(joblist)
-                        response.next_page_number != null ?
-                        next_paging+=`<a id="ajax_paginator" class="next" href="?page=${ response.next_page_number }">Next</a>`
-                        : ''
+        $('#job').html(joblist)
+        response.next_page_number != null ?
+          next_paging += `<a id="ajax_paginator" class="next" href="?page=${response.next_page_number}">Next</a>`
+          : ''
 
-                        $('div>#next_page').html(next_paging)
-                        $('div>.active').removeClass('active')
-                        $('div>.ajax_paginator_'+response.current_page_no).addClass('active')
-                        
-                        // .attr('href','http://example.com')
-                        // .removeAttr("href");
-                        
-                        response.current_page_no > 1 ?
-                        prev_paging+=`<a id="ajax_paginator" href="?page=${ response.prev_page_number }" class="prev">Prev</a>`
-                        : ''
-                        $('div>#prev_page').html(prev_paging)
+        $('div>#next_page').html(next_paging)
+        $('div>.active').removeClass('active')
+        $('div>.ajax_paginator_' + response.current_page_no).addClass('active')
 
-                        page_navigator+=`Showing ${ response.current_page_no } of ${ response.no_of_page } Pages`
-                        $('div>#page_navigator').html(page_navigator)
-                      
-                    },
-                    
-				error: function () {
-					alert('Error Occured');
-				}
-			});
+        // .attr('href','http://example.com')
+        // .removeAttr("href");
 
-	});  
-  
-  
-	</script>
+        response.current_page_no > 1 ?
+          prev_paging += `<a id="ajax_paginator" href="?page=${response.prev_page_number}" class="prev">Prev</a>`
+          : ''
+        $('div>#prev_page').html(prev_paging)
+
+        page_navigator += `Showing ${response.current_page_no} of ${response.no_of_page} Pages`
+        $('div>#page_navigator').html(page_navigator)
+
+      },
+
+      error: function () {
+        alert('Error Occured');
+      }
+    });
+
+  });
+
+
+</script>
 {% endblock %}
-
-

@@ -4,8 +4,8 @@
 
 
 <!-- HOME -->
-<section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');"
-  id="home-section">
+<section class="section-hero overlay inner-page bg-image"
+  style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
   <div class="container">
     <div class="row">
       <div class="col-md-7">
@@ -38,11 +38,12 @@
               <span class="badge badge-danger">
                 Part Time
               </span>
-              {% else  %}
+              {% else %}
               <span class="badge badge-info">
                 Internship
               </span>
-              {% endif %}</li>
+              {% endif %}
+            </li>
             <li class="badge badge-secondary menu-fix mb-2"> {{ job.location }}</li>
           </ul>
           <p>{{ job.description | safe | truncatechars:150}}</p>
