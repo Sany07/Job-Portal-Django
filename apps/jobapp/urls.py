@@ -14,6 +14,7 @@ from jobapp.views import (
     MakeCompleteJobView,
     SearchResultView,
     SingleJobView,
+    UpdateApplicantStatusView,
 )
 
 app_name = "jobapp"
@@ -34,5 +35,6 @@ urlpatterns = [
     path('dashboard/employer/applicant/<int:id>/', ApplicantDetailsView.as_view(), name='applicant-details'),
     path('dashboard/employer/close/<int:id>/', MakeCompleteJobView.as_view(), name='complete'),
     path('dashboard/employer/delete/<int:id>/', DeleteJobView.as_view(), name='delete'),
+    path('dashboard/employer/applicant/update-status/<int:id>/', UpdateApplicantStatusView.as_view(), name='update-applicant-status'),
     path('dashboard/employee/delete-bookmark/<int:id>/', DeleteBookmarkView.as_view(), name='delete-bookmark'),
 ]

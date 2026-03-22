@@ -15,7 +15,7 @@ def home_view(request):
     """
     Home page — kept as FBV due to AJAX + stats logic.
     """
-    published_jobs = Job.objects.filter(is_published=True).order_by('-timestamp')
+    published_jobs = Job.objects.filter(is_published=True).order_by('-updated_at')
     jobs = published_jobs.filter(is_closed=False)
     total_candidates = User.objects.filter(role='employee').count()
     total_companies = User.objects.filter(role='employer').count()

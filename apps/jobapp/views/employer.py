@@ -106,4 +106,24 @@ class ApplicantDetailsView(EmployerRequiredMixin, DetailView):
     pk_url_kwarg = 'id'
 
 
+class UpdateApplicantStatusView(EmployerRequiredMixin, View):
+    """Employer updates the status of an application (Accepted/Rejected)."""
+    def post(self, request, id):
+        applicant = get_object_or_404(Applicant, id=id)
+        # Ensure the employer owns the job
+        if applicant.job.user != request.user:
+            messages.error(request, 'You are not authorized to perform this action.')
+            return redirect('jobapp:dashboard')
+        
+        status = request.POST.get('status')
+        if status in ['accepted', 'rejected']:
+            applicant.status = status
+            applicant.save()
+            messages.success(request, f'Applicant has been {status}!')
+        else:
+            messages.error(request, 'Invalid status.')
+            
+        return redirect('jobapp:applicants', id=applicant.job.id)
+
+
 

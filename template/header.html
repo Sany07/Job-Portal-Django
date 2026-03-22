@@ -36,19 +36,19 @@
             <div class="site-navigation fix">
               <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
 
-                {% if user.is_authenticated and user.role == 'employer' %}
+                {% if user.is_authenticated and user.role == 'employer'  %}
                 <a href="{% url 'jobapp:create-job' %}"
                   class="js-clone-nav pr-3 btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
                     class="mr-2 icon-add"></span>Publish Job</a>
 
-
-                <li class="pr-3 has-children">
-                  <a>Dashboard</a>
-                  <ul class="dropdown">
-                    <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
-                    <li><a href="{% url 'account:logout' %}">Logout</a></li>
-                  </ul>
-                </li>
+                  
+                    <li class="pr-3 has-children">
+                      <a>Dashboard</a> 
+                      <ul class="dropdown">
+                        <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'account:logout' %}">Logout</a></li>
+                      </ul>
+                    </li>
 
                 {% elif user.is_authenticated %}
 
@@ -60,7 +60,7 @@
                 </li>
 
                 <li class="pr-3 has-children">
-                  <a>Dashboard</a>
+                  <a>Dashboard</a> 
                   <ul class="dropdown">
                     <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
                     <li><a href="{% url 'account:logout' %}">Logout</a></li>
@@ -86,8 +86,8 @@
               </ul>
             </div>
 
-            <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
-                class="icon-menu h3 m-0 p-0 mt-2"></span></a>
-          </div>
-        </div>
+        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
+            class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+      </div>
+    </div>
   </header>
