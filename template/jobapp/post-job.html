@@ -64,7 +64,26 @@
                               <option value="3" {% if form.type.value == "3" %} selected {% endif %}>Internship</option>
                         </select>
                         </div>
-                    
+                    {% elif field.name == 'work_mode' %}
+                        <div class="form-group">
+                        <label for="work-mode">Work Mode</label>
+                        <select name="work_mode" class="selectpicker border rounded" id="work-mode" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Work Mode">
+                              <option value="1" {% if form.work_mode.value == "1" %} selected {% endif %}>Remote</option>
+                              <option value="2" {% if form.work_mode.value == "2" %} selected {% endif %}>Hybrid</option>
+                              <option value="3" {% if form.work_mode.value == "3" %} selected {% endif %}>On-site</option>
+                        </select>
+                        </div>
+
+                    {% elif field.name == 'experience_level' %}
+                        <div class="form-group">
+                        <label for="experience-level">Experience Level</label>
+                        <select name="experience_level" class="selectpicker border rounded" id="experience-level" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Experience Level">
+                              <option value="0" {% if form.experience_level.value == "0" %} selected {% endif %}>Entry Level</option>
+                              <option value="1" {% if form.experience_level.value == "1" %} selected {% endif %}>Mid Level</option>
+                              <option value="2" {% if form.experience_level.value == "2" %} selected {% endif %}>Senior Level</option>
+                              <option value="3" {% if form.experience_level.value == "3" %} selected {% endif %}>Lead / Manager</option>
+                        </select>
+                        </div>
                     {% elif field.name == 'category' %}
                         <div class="form-group">
                         <label for="job-type">Category</label>

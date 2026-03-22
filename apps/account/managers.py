@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.utils.translation import gettext_lazy as _
-
+from account.constants import ROLE, GENDER_TYPE
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -30,8 +29,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('role', 'employer')
-        extra_fields.setdefault('gender', 'M')
+        extra_fields.setdefault('role', ROLE[0][0])  # 'employer'
+        extra_fields.setdefault('gender', GENDER_TYPE[0][0])  # 'M'
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')

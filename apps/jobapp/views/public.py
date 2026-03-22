@@ -36,11 +36,22 @@ def home_view(request):
         }
         return JsonResponse(data)
 
+    # Cache stats for 15 minutes
+    stats = cache.get('home_stats')
+    if not stats:
+        stats = {
+            'total_candidates': User.objects.filter(role='employee').count(),
+            'total_companies': User.objects.filter(role='employer').count(),
+            'total_jobs': jobs.count(),
+            'total_completed_jobs': published_jobs.filter(is_closed=True).count(),
+        }
+        cache.set('home_stats', stats, 60 * 15)
+
     context = {
-        'total_candidates': total_candidates,
-        'total_companies': total_companies,
-        'total_jobs': len(jobs),
-        'total_completed_jobs': len(published_jobs.filter(is_closed=True)),
+        'total_candidates': stats['total_candidates'],
+        'total_companies': stats['total_companies'],
+        'total_jobs': stats['total_jobs'],
+        'total_completed_jobs': stats['total_completed_jobs'],
         'page_obj': page_obj,
     }
     return render(request, 'jobapp/index.html', context)
@@ -73,6 +84,7 @@ class SingleJobView(DetailView):
             job = get_object_or_404(Job, id=job_id)
             cache.set(job_id, job, 60 * 15)
         else:
+            # Refresh views_count in cached object
             job.views_count += 1
             cache.set(job_id, job, 60 * 15)
             

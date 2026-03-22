@@ -15,16 +15,16 @@ JOB_TYPE = (
 )
 
 WORK_MODE = (
-    ('remote', 'Remote'),
-    ('hybrid', 'Hybrid'),
-    ('onsite', 'On-site'),
+    ('1', 'Remote'),
+    ('2', 'Hybrid'),
+    ('3', 'On-site'),
 )
 
 EXPERIENCE_LEVEL = (
-    ('entry', 'Entry Level'),
-    ('mid', 'Mid Level'),
-    ('senior', 'Senior Level'),
-    ('lead', 'Lead / Manager'),
+    ('0', 'Entry Level'),
+    ('1', 'Mid Level'),
+    ('2', 'Senior Level'),
+    ('3', 'Lead / Manager'),
 )
 
 
@@ -37,17 +37,17 @@ class Category(models.Model):
 
 class Job(TimeStampedModel, SoftDeleteModel):
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=300, db_index=True)
     description = CKEditor5Field(config_name='extends')
     tags = TaggableManager()
-    location = models.CharField(max_length=300)
-    job_type = models.CharField(choices=JOB_TYPE, max_length=1)
-    work_mode = models.CharField(choices=WORK_MODE, max_length=10, default='onsite')
-    experience_level = models.CharField(choices=EXPERIENCE_LEVEL, max_length=10, default='entry')
+    location = models.CharField(max_length=300, db_index=True)
+    job_type = models.CharField(choices=JOB_TYPE, max_length=1, db_index=True)
+    work_mode = models.CharField(choices=WORK_MODE, max_length=1, default='3')
+    experience_level = models.CharField(choices=EXPERIENCE_LEVEL, max_length=1, default='0')
     category = models.ForeignKey(Category, related_name='Category', on_delete=models.CASCADE)
     salary = models.CharField(max_length=30, blank=True)
     views_count = models.PositiveIntegerField(default=0)
-    company_name = models.CharField(max_length=300)
+    company_name = models.CharField(max_length=300, db_index=True)
     company_description = CKEditor5Field(config_name='extends', blank=True, null=True)
     url = models.URLField(max_length=200)
     last_date = models.DateField()
@@ -56,4 +56,10 @@ class Job(TimeStampedModel, SoftDeleteModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['title', 'location']),
+            models.Index(fields=['is_published', 'is_closed']),
+        ]
 
