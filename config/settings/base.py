@@ -81,25 +81,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-#
-# Always use DATABASE_URL. This avoids accidentally falling back to sqlite in
-# production when DATABASE_URL is missing or misconfigured.
+
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': env.db('DATABASE_URL', default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}")
 }
 
-# Render Postgres requires TLS; allow override via env var.
-DB_SSLMODE = env('DB_SSLMODE', default='require')
-
-# Render Postgres requires TLS; ensure SSL mode is enabled.
-db_url_lower = (env('DATABASE_URL') or '').lower()
-if 'postgres' in db_url_lower:
-    # Explicitly override sslmode (not setdefault) so misconfigured values
-    # from DATABASE_URL don't prevent TLS from being enabled.
-    DATABASES['default']['OPTIONS'] = DATABASES['default'].get('OPTIONS', {})
-    DATABASES['default']['OPTIONS']['sslmode'] = DB_SSLMODE
-
-INTERNAL_IPS = ['127.0.0.1']
+# INTERNAL_IPS = ['127.0.0.1']
 # CACHES
 # ------------------------------------------------------------------------------
 
@@ -191,7 +178,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-
 
 # Security hardening toggles (typically overridden in production.py)
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
