@@ -81,19 +81,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-#
-# Always use DATABASE_URL. This avoids accidentally falling back to sqlite in
-# production when DATABASE_URL is missing or misconfigured.
+
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': env.db('DATABASE_URL', default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}")
 }
 
-# Render Postgres requires TLS; ensure SSL mode is enabled.
-if 'postgresql' in DATABASES['default'].get('ENGINE', ''):
-    DATABASES['default'].setdefault('OPTIONS', {})
-    DATABASES['default']['OPTIONS']['sslmode'] = 'require'
-
-INTERNAL_IPS = ['127.0.0.1']
+# INTERNAL_IPS = ['127.0.0.1']
 # CACHES
 # ------------------------------------------------------------------------------
 
@@ -182,7 +175,7 @@ MESSAGE_TAGS = {
 # WhiteNoise compressed static files
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
