@@ -186,11 +186,13 @@ MESSAGE_TAGS = {
 
 
 # WhiteNoise compressed static files
-STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Allow missing source maps (common for minified JS)
+WHITENOISE_MANIFEST_STRICT = False
 
 # Security hardening toggles (typically overridden in production.py)
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
