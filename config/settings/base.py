@@ -88,10 +88,13 @@ DATABASES = {
     'default': env.db('DATABASE_URL'),
 }
 
+# Render Postgres requires TLS; allow override via env var.
+DB_SSLMODE = env('DB_SSLMODE', default='require')
+
 # Render Postgres requires TLS; ensure SSL mode is enabled.
 if 'postgresql' in DATABASES['default'].get('ENGINE', ''):
     DATABASES['default'].setdefault('OPTIONS', {})
-    DATABASES['default']['OPTIONS']['sslmode'] = 'require'
+    DATABASES['default']['OPTIONS']['sslmode'] = DB_SSLMODE
 
 INTERNAL_IPS = ['127.0.0.1']
 # CACHES
