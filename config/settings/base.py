@@ -186,6 +186,7 @@ MESSAGE_TAGS = {
 
 
 # WhiteNoise compressed static files
+STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
