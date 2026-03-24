@@ -2,6 +2,54 @@
 {% load static %}
 {% load is_job_already_applied %}
 {% load is_job_already_saved %}
+{% load i18n %}
+
+{% block meta_title %}{{ job.title }} at {{ job.company_name }} | DJobPortal{% endblock %}
+
+{% block meta_description %}{{ job.description|striptags|truncatewords:30 }}{% endblock %}
+
+{% block meta_keywords %}{% for tag in job.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}, {{ job.location }}, {{ job.company_name }}{% endblock %}
+
+{% block extra_meta %}
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:title" content="{{ job.title }} at {{ job.company_name }}">
+<meta property="og:description" content="{{ job.description|striptags|truncatewords:30 }}">
+<meta property="og:image" content="{% static 'images/favicon.png' %}">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+<meta property="twitter:title" content="{{ job.title }} at {{ job.company_name }}">
+<meta property="twitter:description" content="{{ job.description|striptags|truncatewords:30 }}">
+<meta property="twitter:image" content="{% static 'images/favicon.png' %}">
+
+<!-- JSON-LD for JobPosting -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "JobPosting",
+  "title": "{{ job.title }}",
+  "description": "{{ job.description|striptags|escapejs }}",
+  "datePosted": "{{ job.created_at|date:'Y-m-d' }}",
+  "validThrough": "{{ job.last_date|date:'Y-m-d' }}",
+  "employmentType": "{% if job.job_type == '1' %}FULL_TIME{% elif job.job_type == '2' %}PART_TIME{% else %}INTERN{% endif %}",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "{{ job.company_name }}",
+    "sameAs": "{{ job.url }}"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "{{ job.location }}"
+    }
+  }
+}
+</script>
+{% endblock %}
 {% block content %}
 <!-- HOME -->
 
