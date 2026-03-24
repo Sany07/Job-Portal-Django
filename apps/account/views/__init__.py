@@ -4,5 +4,5 @@ from .auth import (
     UserLoginView,
     UserLogoutView,
 )
-from .profile import EmployeeEditProfileView
+from .profile import EmployeeEditProfileView, EmployerEditProfileView
 

@@ -144,3 +144,4 @@ pip-selfcheck.json
 
 # Local development files
 implementation_plan.md
+fix_profiles.py
