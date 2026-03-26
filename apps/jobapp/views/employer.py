@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -70,6 +71,8 @@ class DeleteJobView(EmployerRequiredMixin, DeleteView):
         return Job.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
+        # Invalidate cache before deleting
+        cache.delete(str(self.get_object().id))
         messages.success(self.request, 'Your Job Post was successfully deleted!')
         return super().form_valid(form)
 
