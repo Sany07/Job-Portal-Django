@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.cache import cache
 
 from core.models import SoftDeleteModel, TimeStampedModel
 
@@ -53,6 +54,12 @@ class Job(TimeStampedModel, SoftDeleteModel):
     last_date = models.DateField()
     is_published = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        # Invalidate cache before saving
+        if self.id:
+            cache.delete(str(self.id))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

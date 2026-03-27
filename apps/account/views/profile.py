@@ -1,29 +1,87 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import UpdateView, View
 
-from account.forms import EmployeeProfileEditForm
-from account.models import User
+from account.forms import EmployeeProfileEditForm, EmployeeProfileForm, EmployerProfileForm
+from account.models import User, EmployeeProfile, EmployerProfile
 from jobapp.permission import EmployeeRequiredMixin
 
-
-class EmployeeEditProfileView(EmployeeRequiredMixin, UpdateView):
-    """Employee updates their own profile."""
-    model = User
-    form_class = EmployeeProfileEditForm
+class EmployeeEditProfileView(EmployeeRequiredMixin, View):
+    """Employee updates their own user and profile data."""
     template_name = 'account/employee-edit-profile.html'
-    pk_url_kwarg = 'id'
 
-    def get_queryset(self):
-        # Employees can only edit their own profile
-        return User.objects.filter(id=self.request.user.id)
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+        if user != request.user:
+            return redirect('jobapp:home')
+        
+        user_form = EmployeeProfileEditForm(instance=user)
+        profile, created = EmployeeProfile.objects.get_or_create(user=user)
+        profile_form = EmployeeProfileForm(instance=profile)
+        
+        return render(request, self.template_name, {
+            'form': user_form,
+            'profile_form': profile_form
+        })
 
-    def get_success_url(self):
-        return reverse_lazy('account:edit-profile', kwargs={'id': self.object.id})
+    def post(self, request, id):
+        user = get_object_or_404(User, id=id)
+        if user != request.user:
+            return redirect('jobapp:home')
+            
+        user_form = EmployeeProfileEditForm(request.POST, instance=user)
+        profile, created = EmployeeProfile.objects.get_or_create(user=user)
+        profile_form = EmployeeProfileForm(request.POST, request.FILES, instance=profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your Profile Was Successfully Updated!')
+            return redirect('account:edit-profile', id=user.id)
+            
+        return render(request, self.template_name, {
+            'form': user_form,
+            'profile_form': profile_form
+        })
 
-    def form_valid(self, form):
-        messages.success(self.request, 'Your Profile Was Successfully Updated!')
-        return super().form_valid(form)
+class EmployerEditProfileView(View):
+    """Employer updates their own user and profile data."""
+    template_name = 'account/employer-edit-profile.html'
+
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+        if user != request.user or user.role != 'employer':
+            return redirect('jobapp:home')
+        
+        user_form = EmployeeProfileEditForm(instance=user) # Can reuse or create specialized
+        profile, created = EmployerProfile.objects.get_or_create(user=user)
+        profile_form = EmployerProfileForm(instance=profile)
+        
+        return render(request, self.template_name, {
+            'form': user_form,
+            'profile_form': profile_form
+        })
+
+    def post(self, request, id):
+        user = get_object_or_404(User, id=id)
+        if user != request.user or user.role != 'employer':
+            return redirect('jobapp:home')
+            
+        user_form = EmployeeProfileEditForm(request.POST, instance=user)
+        profile, created = EmployerProfile.objects.get_or_create(user=user)
+        profile_form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Company Profile Was Successfully Updated!')
+            return redirect('account:edit-profile', id=user.id)
+            
+        return render(request, self.template_name, {
+            'form': user_form,
+            'profile_form': profile_form
+        })
 
 
 

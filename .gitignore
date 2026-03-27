@@ -142,4 +142,6 @@ pip-selfcheck.json
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/django,virtualenv,visualstudiocode
+# Local development files
+implementation_plan.md
+fix_profiles.py
