@@ -46,6 +46,7 @@
                       <a>Dashboard</a> 
                       <ul class="dropdown">
                         <li><a href="{% url 'jobapp:dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'account:employer-profile' request.user.id %}">View Company Profile</a></li>
                         <li><a href="{% url 'account:logout' %}">Logout</a></li>
                       </ul>
                     </li>
@@ -55,6 +56,7 @@
                 <li class="pr-3 has-children">
                   <a>Profile</a>
                   <ul class="dropdown">
+                    <li><a href="{% url 'account:candidate-profile' request.user.id %}">View My Profile</a></li>
                     <li><a href="{% url 'account:edit-profile' request.user.id %}">Edit Settings</a></li>
                   </ul>
                 </li>

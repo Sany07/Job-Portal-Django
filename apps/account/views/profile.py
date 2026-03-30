@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import UpdateView, View
+from django.views.generic import UpdateView, View, DetailView
 
 from account.forms import EmployeeProfileEditForm, EmployeeProfileForm, EmployerProfileForm
 from account.models import User, EmployeeProfile, EmployerProfile
@@ -82,6 +82,21 @@ class EmployerEditProfileView(View):
             'form': user_form,
             'profile_form': profile_form
         })
+class CandidateProfileView(DetailView):
+    """View candidate profile."""
+    model = EmployeeProfile
+    template_name = 'account/candidate-profile.html'
+    context_object_name = 'profile'
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(EmployeeProfile, user_id=self.kwargs.get('id'))
 
+class EmployerProfileView(DetailView):
+    """View employer profile."""
+    model = EmployerProfile
+    template_name = 'account/employer-profile.html'
+    context_object_name = 'profile'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(EmployerProfile, user_id=self.kwargs.get('id'))
 

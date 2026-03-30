@@ -79,12 +79,17 @@
       <div class="col-lg-8 mb-4 mb-lg-0">
         <div class="d-flex align-items-center">
           <div class="border p-2 d-inline-block mr-3 rounded">
-            <img src="{% static 'images/job_logo_2.jpg' %}" alt="Image">
+            <a href="{% url 'account:employer-profile' job.user.id %}">
+              {% if job.user.employer_profile.company_logo %}
+                <img src="{{ job.user.employer_profile.company_logo.url }}" alt="Image" style="width: 50px; height: 50px; object-fit: cover;">
+              {% else %}
+                <img src="{% static 'images/job_logo_2.jpg' %}" alt="Image">
+              {% endif %}
+            </a>
           </div>
           <div>
-            <h2>{{ job.title }}</h2>
             <div>
-              <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span><a href="{{ job.url }}">{{ job.company_name }}</a></span>
+              <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span><a href="{% url 'account:employer-profile' job.user.id %}" class="text-primary font-weight-bold">{{ job.company_name }}</a></span>
               <span class="m-2"><span class="icon-room mr-2"></span>{{ job.location }}</span>
               <span class="m-2"><span class="icon-clock-o mr-2"></span>
                 <span class="text-primary">

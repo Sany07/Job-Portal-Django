@@ -1,0 +1,74 @@
+{% load static %}
+<div class="profile-header-card glass-morphism mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+            {% if profile_type == 'employee' %}
+                <div class="profile-avatar mb-3">
+                    <div class="avatar-placeholder">{{ profile.user.first_name|first }}{{ profile.user.last_name|first }}</div>
+                </div>
+            {% else %}
+                <div class="company-logo-container mb-3">
+                    {% if profile.company_logo %}
+                        <img src="{{ profile.company_logo.url }}" alt="Company Logo" class="img-fluid rounded shadow">
+                    {% else %}
+                        <div class="logo-placeholder">🏢</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <h2 class="display-5 font-weight-bold mb-1">
+                {% if profile_type == 'employee' %}
+                    {{ profile.user.get_full_name }}
+                {% else %}
+                    {{ profile.user.get_full_name }} <small class="text-muted">(Employer)</small>
+                {% endif %}
+            </h2>
+            <p class="lead text-primary mb-3">
+                {% if profile_type == 'employee' %}
+                    Candidate | {{ profile.user.email }}
+                {% else %}
+                    {{ profile.company_website|default:"Company Website Not Provided" }}
+                {% endif %}
+            </p>
+            
+            <div class="social-links d-flex gap-3">
+                {% if profile_type == 'employee' %}
+                    {% if profile.social_linkedin %}<a href="{{ profile.social_linkedin }}" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin"></i> LinkedIn</a>{% endif %}
+                    {% if profile.social_github %}<a href="{{ profile.social_github }}" class="btn btn-outline-dark btn-sm"><i class="fab fa-github"></i> GitHub</a>{% endif %}
+                {% else %}
+                    {% if profile.company_website %}<a href="{{ profile.company_website }}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-globe"></i> Website</a>{% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-header-card {
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+.avatar-placeholder, .logo-placeholder {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.company-logo-container img {
+    max-width: 150px;
+    border-radius: 12px;
+}
+.gap-3 { gap: 1rem; }
+</style>

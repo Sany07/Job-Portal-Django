@@ -1,0 +1,16 @@
+{% load static %}
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image"
+  style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <!-- <h1 class="text-white font-weight-bold">{{ hero_title|default:"Profile" }}</h1> -->
+        <div class="custom-breadcrumbs">
+          <a href="{% url 'jobapp:home' %}">Home</a> <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>{{ hero_breadcrumb|default:"Profile" }}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

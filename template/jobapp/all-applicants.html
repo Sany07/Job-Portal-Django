@@ -40,7 +40,7 @@
                         {{ applicant.get_total_applicant }}
 
                                 <tr>
-                                    <td class="text-center"><a href="">{{ applicant.user.get_full_name }}</a></td     >
+                                    <td class="text-center"><a href="{% url 'account:candidate-profile' applicant.user.id %}">{{ applicant.user.get_full_name }}</a></td>
                                     <td>{{ applicant.job.title }}</td>
                                     <td>{{ applicant.created_at | date:'M d, Y' }}</td>
                                     <td>
