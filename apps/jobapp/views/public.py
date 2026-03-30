@@ -64,6 +64,9 @@ class JobListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
+        user_id = self.request.GET.get('user_id')
+        if user_id:
+            return get_listed_jobs().filter(user_id=user_id)
         return get_listed_jobs()
 
 

@@ -55,7 +55,7 @@
                     requires filtering Job model by user=profile.user.
                     {% endcomment %}
                     <p class="text-muted italic">Check our job listings page for current openings.</p>
-                    <a href="{% url 'jobapp:job-list' %}" class="btn btn-sm btn-info rounded-pill">Browse All Jobs</a>
+                    <a href="{% url 'jobapp:job-list' %}?user_id={{ profile.user.id }}" class="btn btn-sm btn-info rounded-pill">Browse All Jobs</a>
                 </div>
             </div>
         </div>
