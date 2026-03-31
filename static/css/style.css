@@ -1567,6 +1567,26 @@ h1, h2, h3, h4 {
     margin: 0;
     float: left;
     width: 100%; }
+  .profile-avatar-placeholder {
+    width: 130px;
+    height: 130px;
+    font-size: 3rem;
+}
+
+.profile-company-logo {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+}
+
+.profile-logo-placeholder {
+    width: 130px;
+    height: 130px;
+}
+
+.profile-logo-placeholder .icon-magnet {
+    font-size: 4rem;
+}
   .comment-list li {
     padding: 0;
     margin: 0 0 30px 0;
@@ -1702,4 +1722,35 @@ h1, h2, h3, h4 {
 /* CKEditor */
 .django-ckeditor-widget {
     width: 100% ;
+}
+
+/* Profile Page Styles */
+.profile-header-card {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.profile-avatar-placeholder {
+    width: 150px !important;
+    height: 150px !important;
+    font-size: 3.5rem !important;
+    background-color: #89ba16 !important;
+}
+
+.profile-company-logo {
+    width: 150px !important;
+    height: 150px !important;
+    object-fit: contain !important;
+}
+
+.profile-logo-placeholder {
+    width: 150px !important;
+    height: 150px !important;
+}
+
+.profile-logo-placeholder .icon-magnet {
+    font-size: 6.5rem !important;
+}
+
+.gap-2 {
+    gap: 0.5rem;
 }

@@ -10,17 +10,17 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-lg-4 mb-4">
-            <div class="profile-card-details glass-morphism p-4">
-                <h4 class="font-weight-bold mb-3">Company Details</h4>
+            <div class="bg-white border rounded p-4 shadow-sm">
+                <h4 class="font-weight-bold mb-3 text-primary">Company Details</h4>
                 <div class="mb-3">
-                    <span class="text-muted small">Location:</span>
+                    <span class="text-muted small font-weight-bold">Location:</span>
                     <p class="mb-2">{{ profile.company_location|default:"Global / Remote" }}</p>
                 </div>
                 <div class="mb-3">
-                    <span class="text-muted small">Website:</span>
+                    <span class="text-muted small font-weight-bold">Website:</span>
                     <p class="mb-2">
                         {% if profile.company_website %}
-                        <a href="{{ profile.company_website }}" target="_blank">{{ profile.company_website }}</a>
+                        <a href="{{ profile.company_website }}" target="_blank" class="text-primary">{{ profile.company_website }}</a>
                         {% else %}
                         Not specified
                         {% endif %}
@@ -30,7 +30,7 @@
                 {% if request.user.id == profile.user.id %}
                 <div class="mt-4">
                     <a href="{% url 'account:employer-edit-profile' profile.user.id %}"
-                        class="btn btn-outline-primary btn-block rounded-pill">
+                        class="btn btn-outline-primary btn-block">
                         <i class="fas fa-edit mr-2"></i> Edit Company Profile
                     </a>
                 </div>
@@ -40,35 +40,25 @@
 
         <!-- Main Content -->
         <div class="col-lg-8">
-            <div class="profile-card-content glass-morphism p-4 mb-4">
-                <h4 class="font-weight-bold mb-3">About the Company</h4>
+            <div class="bg-white border rounded p-4 mb-4 shadow-sm">
+                <h4 class="font-weight-bold mb-3 text-primary">About the Company</h4>
                 <div class="text-dark">
                     {{ profile.description|linebreaks|default:"We are a growing company looking for the best talent." }}
                 </div>
             </div>
 
-            <div class="profile-card-content glass-morphism p-4">
-                <h4 class="font-weight-bold mb-3">Active Job Openings</h4>
+            <div class="bg-white border rounded p-4 shadow-sm">
+                <h4 class="font-weight-bold mb-3 text-primary">Active Job Openings</h4>
                 <div class="jobs-list">
                     {% comment %}
                     Later: We can add a list of jobs posted by this employer here.
                     requires filtering Job model by user=profile.user.
                     {% endcomment %}
                     <p class="text-muted italic">Check our job listings page for current openings.</p>
-                    <a href="{% url 'jobapp:job-list' %}?user_id={{ profile.user.id }}" class="btn btn-sm btn-info rounded-pill">Browse All Jobs</a>
+                    <a href="{% url 'jobapp:job-list' %}?user_id={{ profile.user.id }}" class="btn btn-sm btn-info px-4">Browse All Jobs</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .glass-morphism {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-</style>
 {% endblock %}
